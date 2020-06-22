@@ -9,9 +9,13 @@ class Visualizer extends Component {
 
     this.state = {
       list: [],
-      NUMBER_OF_ARRAY_BARS: 7,
+      NUMBER_OF_ARRAY_BARS: 40,
     };
   }
+  getNumberOnBar = (bar_count) => {
+    if (bar_count <= 40) return "aliceblue";
+    else return "transparent";
+  };
   getWidthOfBars = (bar_count) => {
     let width; //set default value
     if (bar_count <= 7) width = 265;
@@ -41,7 +45,7 @@ class Visualizer extends Component {
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
   };
   reSizeArray = (event) => {
-    //console.log("User Selected: ", event.target.value);
+    console.log("User Selected: ", event.target.value);
     //User select a value
     //Now update the array size
     this.state.NUMBER_OF_ARRAY_BARS = event.target.value;
@@ -94,6 +98,9 @@ class Visualizer extends Component {
   render() {
     const { list } = this.state;
     let widthOfBar = this.getWidthOfBars(this.state.NUMBER_OF_ARRAY_BARS);
+    let displayNumberOnBar = this.getNumberOnBar(
+      this.state.NUMBER_OF_ARRAY_BARS
+    );
     return (
       <div>
         <header>
@@ -136,7 +143,7 @@ class Visualizer extends Component {
               id={index}
               style={{ height: number * 3, width: widthOfBar }}
             >
-              <p style={{ color: "transparent" }}>{number}</p>
+              <p style={{ color: displayNumberOnBar }}>{number}</p>
             </div>
           ))}
         </div>
@@ -145,4 +152,4 @@ class Visualizer extends Component {
   }
 }
 
-export default Visualizer;
+export default Visualizer; //style={{ color: "transparent" }}
