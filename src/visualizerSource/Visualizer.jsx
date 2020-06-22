@@ -9,7 +9,7 @@ class Visualizer extends Component {
 
     this.state = {
       list: [],
-      NUMBER_OF_ARRAY_BARS: 40,
+      NUMBER_OF_ARRAY_BARS: 4,
     };
   }
   getNumberOnBar = (bar_count) => {
@@ -45,7 +45,7 @@ class Visualizer extends Component {
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
   };
   reSizeArray = (event) => {
-    console.log("User Selected: ", event.target.value);
+    //console.log("User Selected: ", event.target.value);
     //User select a value
     //Now update the array size
     this.state.NUMBER_OF_ARRAY_BARS = event.target.value;
@@ -54,44 +54,45 @@ class Visualizer extends Component {
   sortValues = () => {
     //Bubble Sort
     let array = this.state.list;
-    console.log("Array : ", array);
-
-    const leng_of_array = array.length;
-    let temp = 0,
-      counter = 1;
+    let temp = 0;
+    let leng_of_array = array.length;
     for (let i = 0; i < leng_of_array - 1; i++) {
       for (let j = i + 1; j < leng_of_array; j++) {
-        //Working with array[i] , array[j]
-        console.log("Working with: ", array[i], array[j]);
-        setTimeout(() => {
-          console.log("Changing colors of i,j : ", i, j, array[i], array[j]);
-          document.getElementById(i).setAttribute("class", "redBar");
-          document.getElementById(j).setAttribute("class", "redBar");
-        }, counter * 0);
-
-        //console.log(" Time taken would be: ", counter * 50);
         if (array[i] > array[j]) {
           temp = array[i];
           array[i] = array[j];
           array[j] = temp;
-          console.log("Swapped & array is: ", array);
         }
-        counter++;
       }
     }
     this.setState({ array });
     console.log("Sorted array: ", array);
   };
 
-  traverseArray = () => {
+  traverseArray = (bar_color) => {
     const leng_of_array = this.state.list.length;
     let original_array = this.state.list;
-    for (let i = 0; i < leng_of_array; i++) {
-      setTimeout(() => {
-        console.log("Element", i);
-        document.getElementById(i).setAttribute("class", "redBar");
-      }, i * 40);
+    //let i = 0;
+    for (let i = 0; i < leng_of_array * 2; i++) {
+      if (i < leng_of_array) {
+        setTimeout(() => {
+          console.log("Element in if", i);
+          if (document.getElementById(i) != null)
+            document.getElementById(i).setAttribute("class", "redBar");
+        }, i * 50);
+        //console.log("inside if: ", i);
+      } else {
+        //console.log("inside else: ", i - leng_of_array);
+        setTimeout(() => {
+          console.log("Element in else", i - leng_of_array);
+          if (document.getElementById(i - leng_of_array) != null)
+            document
+              .getElementById(i - leng_of_array)
+              .setAttribute("class", "normalBar");
+        }, i * 50);
+      }
     }
+
     clearTimeout();
     this.setState({ original_array });
   };
@@ -120,7 +121,7 @@ class Visualizer extends Component {
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" onClick={this.traverseArray}>
+                <a href="#" onClick={() => this.traverseArray("redBar")}>
                   Traverse Each Element
                 </a>
               </li>
@@ -152,4 +153,11 @@ class Visualizer extends Component {
   }
 }
 
-export default Visualizer; //style={{ color: "transparent" }}
+export default Visualizer;
+/*Timeout Code:
+        setTimeout(() => {
+          console.log();
+        }, 1000);
+        clearTimeout();
+
+*/
