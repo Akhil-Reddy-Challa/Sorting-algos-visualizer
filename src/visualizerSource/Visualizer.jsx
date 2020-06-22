@@ -9,9 +9,21 @@ class Visualizer extends Component {
 
     this.state = {
       list: [],
-      NUMBER_OF_ARRAY_BARS: 4,
+      NUMBER_OF_ARRAY_BARS: 7,
     };
   }
+  getWidthOfBars = (bar_count) => {
+    let width; //set default value
+    if (bar_count <= 7) width = 265;
+    else if (bar_count <= 20) width = 91.5;
+    else if (bar_count <= 40) width = 44;
+    else if (bar_count <= 80) width = 20;
+    else if (bar_count <= 160) width = 8;
+    else if (bar_count <= 213) width = 4;
+    else width = 3;
+    return width;
+    //console.log(width);
+  };
 
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
@@ -25,9 +37,8 @@ class Visualizer extends Component {
     //Now delete all elements in array, so that we can use above method(generateValuesInArray)
     this.state.list.length = 0; //This will empty the array( Reference: https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript)
     //console.log(this.state.NUMBER_OF_ARRAY_BARS);
-
+    //console.log("I am here now ");
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
-    //Now change button text:
   };
   reSizeArray = (event) => {
     //console.log("User Selected: ", event.target.value);
@@ -37,16 +48,37 @@ class Visualizer extends Component {
     this.generateNewValues();
   };
   sortValues = () => {
+    //Bubble Sort
     let array = this.state.list;
-    //console.log("Before sort", array);
+    console.log("Array : ", array);
 
-    //console.log("Array size is: ", array.length);
-    //Sort using JS in-built method
-    array.sort((a, b) => a - b);
-    //console.log("After sort", array);
+    const leng_of_array = array.length;
+    let temp = 0,
+      counter = 1;
+    for (let i = 0; i < leng_of_array - 1; i++) {
+      for (let j = i + 1; j < leng_of_array; j++) {
+        //Working with array[i] , array[j]
+        console.log("Working with: ", array[i], array[j]);
+        setTimeout(() => {
+          console.log("Changing colors of i,j : ", i, j, array[i], array[j]);
+          document.getElementById(i).setAttribute("class", "redBar");
+          document.getElementById(j).setAttribute("class", "redBar");
+        }, counter * 0);
+
+        //console.log(" Time taken would be: ", counter * 50);
+        if (array[i] > array[j]) {
+          temp = array[i];
+          array[i] = array[j];
+          array[j] = temp;
+          console.log("Swapped & array is: ", array);
+        }
+        counter++;
+      }
+    }
     this.setState({ array });
+    console.log("Sorted array: ", array);
   };
-  doTheChange(i) {}
+
   traverseArray = () => {
     const leng_of_array = this.state.list.length;
     let original_array = this.state.list;
@@ -54,13 +86,14 @@ class Visualizer extends Component {
       setTimeout(() => {
         console.log("Element", i);
         document.getElementById(i).setAttribute("class", "redBar");
-      }, i * 400);
+      }, i * 40);
     }
     clearTimeout();
     this.setState({ original_array });
   };
   render() {
     const { list } = this.state;
+    let widthOfBar = this.getWidthOfBars(this.state.NUMBER_OF_ARRAY_BARS);
     return (
       <div>
         <header>
@@ -72,9 +105,9 @@ class Visualizer extends Component {
             type="range"
             id="slider"
             name="Slider"
-            defaultValue="4"
-            min="4"
-            max="271"
+            defaultValue="7"
+            min="7"
+            max="274"
             onChange={this.reSizeArray}
           />
           <nav>
@@ -101,7 +134,7 @@ class Visualizer extends Component {
             <div
               className="normalBar"
               id={index}
-              style={{ height: number * 3 }}
+              style={{ height: number * 3, width: widthOfBar }}
             >
               <p style={{ color: "transparent" }}>{number}</p>
             </div>
