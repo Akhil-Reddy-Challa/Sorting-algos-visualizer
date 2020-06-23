@@ -28,7 +28,6 @@ class Visualizer extends Component {
     return width;
     //console.log(width);
   };
-
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
     const max = 275;
@@ -57,16 +56,15 @@ class Visualizer extends Component {
     let temp = 0;
     let leng_of_array = array.length;
     for (let i = 0; i < leng_of_array - 1; i++) {
-      for (let j = i + 1; j < leng_of_array; j++) {
-        if (array[i] > array[j]) {
-          temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
+      for (let j = 0; j < leng_of_array - 1; j++) {
+        if (array[j] > array[j + 1]) {
+          temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
         }
       }
     }
     this.setState({ array });
-    console.log("Sorted array: ", array);
   };
 
   traverseArray = (bar_color) => {
@@ -79,7 +77,7 @@ class Visualizer extends Component {
           console.log("Element in if", i);
           if (document.getElementById(i) != null)
             document.getElementById(i).setAttribute("class", "redBar");
-        }, i * 50);
+        }, i * 10);
         //console.log("inside if: ", i);
       } else {
         //console.log("inside else: ", i - leng_of_array);
@@ -89,7 +87,7 @@ class Visualizer extends Component {
             document
               .getElementById(i - leng_of_array)
               .setAttribute("class", "normalBar");
-        }, i * 50);
+        }, i * 10);
       }
     }
 
@@ -115,7 +113,7 @@ class Visualizer extends Component {
             name="Slider"
             defaultValue="7"
             min="7"
-            max="274"
+            max="273"
             onChange={this.reSizeArray}
           />
           <nav>
