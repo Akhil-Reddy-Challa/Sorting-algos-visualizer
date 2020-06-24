@@ -109,14 +109,14 @@ p {
 .normalBar {
   width: 3px;
   display: inline-block;
-  margin: 2px;
+  margin-left: 2px;
   background-color: #1affff;
   text-align: center;
 }
 .redBar {
-  width: 265px;
+  width: 3px;
   display: inline-block;
-  margin: 2px;
+  margin-left: 2px;
   background-color: red;
   text-align: center;
 }
