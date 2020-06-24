@@ -120,3 +120,8 @@ p {
   background-color: red;
   text-align: center;
 }
+
+.makeTextBold {
+  font-weight: bolder;
+  font-size: 15px;
+}

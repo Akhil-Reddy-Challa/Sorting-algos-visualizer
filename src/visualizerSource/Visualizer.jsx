@@ -10,7 +10,7 @@ class Visualizer extends Component {
     };
   }
   getNumberOnBar = (bar_count) => {
-    if (bar_count <= 40) return "aliceblue";
+    if (bar_count <= 65) return "aliceblue";
     else return "transparent";
   };
   getWidthOfBars = (bar_count, screen_width) => {
@@ -30,7 +30,7 @@ class Visualizer extends Component {
   };
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
-    const max = 275;
+    const max = 255;
     const list = [];
     for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++)
       list.push(Math.trunc(min + Math.random() * (max - min)));
@@ -103,12 +103,12 @@ class Visualizer extends Component {
   };
   render() {
     const { list } = this.state;
-    let widthOfBar = this.getWidthOfBars(
+    var widthOfBar = this.getWidthOfBars(
       this.state.NUMBER_OF_ARRAY_BARS,
       window.innerWidth
     );
 
-    let displayNumberOnBar = this.getNumberOnBar(
+    var displayNumberOnBar = this.getNumberOnBar(
       this.state.NUMBER_OF_ARRAY_BARS
     );
     return (
@@ -154,7 +154,9 @@ class Visualizer extends Component {
               key={index}
               style={{ height: number * 3, width: widthOfBar }}
             >
-              <p style={{ color: displayNumberOnBar }}>{number}</p>
+              <p className="makeTextBold" style={{ color: displayNumberOnBar }}>
+                {number}
+              </p>
             </div>
           ))}
         </div>
