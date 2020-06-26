@@ -57,52 +57,46 @@ class Visualizer extends Component {
     To solve this: we have included this.geneateNewValues() in it's call back area
     */
   };
-  sortValues = () => {
+
+  sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+  sortValues = async () => {
     //Bubble Sort
-    let array = this.state.list;
-    let temp = 0;
-    let counter = 1;
-    console.log("Array is: ", array);
-    let leng_of_array = array.length;
-    for (let i = 0; i < leng_of_array - 1; i++) {
-      for (let j = 0; j < leng_of_array - 1; j++) {
-        if (array[j] > array[j + 1]) {
-          console.log("Change a[j],a[j+1] ", j, j + 1, array[j], array[j + 1]);
-          setTimeout(() => {
-            document.getElementById(j).setAttribute("class", "redBar");
-            document.getElementById(j + 1).setAttribute("class", "redBar");
-          }, counter * 1000);
-          counter++;
-          setTimeout(() => {
-            document.getElementById(j).setAttribute("class", "normalBar");
-            document.getElementById(j + 1).setAttribute("class", "normalBar");
-          }, counter * 1000);
-          counter++;
-          temp = array[j];
-          array[j] = array[j + 1];
-          array[j + 1] = temp;
-          console.log("Swappped");
-        }
-      }
+    console.log("I am here");
+    for (var i = 0; i < 3; i++) {
+      await this.sleep(1000);
+      console.log("I am here now after ", i + 1, " seconds");
     }
-    setTimeout(() => {
-      this.setState({ array });
-    }, counter * 1000);
-    clearTimeout();
-    //array.sort((a, b) => a - b);
-    //this.setState({ array });
-    /*    
-    for (let i = 0; i < leng_of_array - 1; i++) {
-      for (let j = 0; j < leng_of_array - 1; j++) {
-        if (array[j] > array[j + 1]) {
-          temp = array[j];
-          array[j] = array[j + 1];
-          array[j + 1] = temp;
-        }
-      }
-    }
-    this.setState({ array });
-  */
+
+    // let array = this.state.list;
+    // let temp = 0;
+    // let counter = 1;
+    // console.log("Array is: ", array);
+    // let leng_of_array = array.length;
+    // for (let i = 0; i < leng_of_array - 1; i++) {
+    //   for (let j = 0; j < leng_of_array - 1; j++) {
+    //     if (array[j] > array[j + 1]) {
+    //       console.log("Change a[j],a[j+1] ", j, j + 1, array[j], array[j + 1]);
+    //       setTimeout(() => {
+    //         document.getElementById(j).setAttribute("class", "redBar");
+    //         document.getElementById(j + 1).setAttribute("class", "redBar");
+    //       }, counter * 1000);
+    //       counter++;
+    //       setTimeout(() => {
+    //         document.getElementById(j).setAttribute("class", "normalBar");
+    //         document.getElementById(j + 1).setAttribute("class", "normalBar");
+    //       }, counter * 1000);
+    //       counter++;
+    //       temp = array[j];
+    //       array[j] = array[j + 1];
+    //       array[j + 1] = temp;
+    //       console.log("Swappped");
+    //     }
+    //   }
+    // }
+    // this.setState({ array });
+    // clearTimeout();
   };
 
   traverseArray = (bar_color) => {
