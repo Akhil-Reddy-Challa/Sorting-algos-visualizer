@@ -57,74 +57,53 @@ class Visualizer extends Component {
     To solve this: we have included this.geneateNewValues() in it's call back area
     */
   };
-
+  getTimeToPause = (numberOfElements) => {
+    if (numberOfElements < 20) return 350;
+    // almost 1 sec
+    else if (numberOfElements < 40) return 150;
+    // greater than 1/2 Second
+    else if (numberOfElements < 100) return 80;
+    // less than 1/2 seconds
+    else if (numberOfElements < 200) return 25;
+    // 90 milliseconds
+    else return 1;
+  };
+  changeColorOnNodes = (color, index1, index2) => {
+    document.getElementById(index1).setAttribute("class", color + "Bar");
+    document.getElementById(index2).setAttribute("class", color + "Bar");
+  };
   sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
-  sortValues = async () => {
-    //Bubble Sort
-    console.log("I am here");
-    for (var i = 0; i < 3; i++) {
-      await this.sleep(1000);
-      console.log("I am here now after ", i + 1, " seconds");
-    }
-
-    // let array = this.state.list;
-    // let temp = 0;
-    // let counter = 1;
-    // console.log("Array is: ", array);
-    // let leng_of_array = array.length;
-    // for (let i = 0; i < leng_of_array - 1; i++) {
-    //   for (let j = 0; j < leng_of_array - 1; j++) {
-    //     if (array[j] > array[j + 1]) {
-    //       console.log("Change a[j],a[j+1] ", j, j + 1, array[j], array[j + 1]);
-    //       setTimeout(() => {
-    //         document.getElementById(j).setAttribute("class", "redBar");
-    //         document.getElementById(j + 1).setAttribute("class", "redBar");
-    //       }, counter * 1000);
-    //       counter++;
-    //       setTimeout(() => {
-    //         document.getElementById(j).setAttribute("class", "normalBar");
-    //         document.getElementById(j + 1).setAttribute("class", "normalBar");
-    //       }, counter * 1000);
-    //       counter++;
-    //       temp = array[j];
-    //       array[j] = array[j + 1];
-    //       array[j + 1] = temp;
-    //       console.log("Swappped");
-    //     }
-    //   }
-    // }
-    // this.setState({ array });
-    // clearTimeout();
-  };
-
-  traverseArray = (bar_color) => {
-    const leng_of_array = this.state.list.length;
-    let original_array = this.state.list;
-    //let i = 0;
-    for (let i = 0; i < leng_of_array * 2; i++) {
-      if (i < leng_of_array) {
-        setTimeout(() => {
-          console.log("Element in if", i);
-          if (document.getElementById(i) != null)
-            document.getElementById(i).setAttribute("class", "redBar");
-        }, i * 10);
-        //console.log("inside if: ", i);
-      } else {
-        //console.log("inside else: ", i - leng_of_array);
-        setTimeout(() => {
-          console.log("Element in else", i - leng_of_array);
-          if (document.getElementById(i - leng_of_array) != null)
-            document
-              .getElementById(i - leng_of_array)
-              .setAttribute("class", "normalBar");
-        }, i * 10);
+  bubbleSort = async () => {
+    let array = this.state.list;
+    let temp = 0;
+    var timeToPause = this.getTimeToPause(array.length);
+    let leng_of_array = array.length;
+    for (let i = 0; i < leng_of_array - 1; i++) {
+      for (let j = 0; j < leng_of_array - 1; j++) {
+        //Now highlight two nodes that we are comparing
+        this.changeColorOnNodes("blue", j, j + 1);
+        await this.sleep(timeToPause);
+        if (array[j] > array[j + 1]) {
+          //Change color to red because they are unsorted
+          this.changeColorOnNodes("red", j, j + 1);
+          //Freeze for 1 sec
+          await this.sleep(timeToPause);
+          //Now swap elements and change the list array
+          temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
+          this.setState({ array });
+        }
+        //Now change color back to normal
+        this.changeColorOnNodes("normal", j, j + 1);
       }
     }
-
-    clearTimeout();
+    //this.setState({ array });
   };
+
+  heapSort = () => {};
   render() {
     const { list } = this.state;
     var widthOfBar = this.getWidthOfBars(
@@ -154,19 +133,19 @@ class Visualizer extends Component {
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" onClick={() => this.traverseArray("redBar")}>
+                <a href="#" onClick={() => this.heapSort()}>
                   Traverse Each Element
                 </a>
               </li>
               <li>
-                <a href="#">Algorithm-2</a>
+                <a href="#">Bubble-Sort</a>
               </li>
               <li>
-                <a href="#">Algorithm-3</a>
+                <a href="#">Merge-Sort</a>
               </li>
             </div>
           </nav>
-          <a className="cta" href="#" onClick={this.sortValues}>
+          <a className="cta" href="#" onClick={this.bubbleSort}>
             Sort
           </a>
         </header>

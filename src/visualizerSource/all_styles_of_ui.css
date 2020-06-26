@@ -120,6 +120,13 @@ p {
   background-color: red;
   text-align: center;
 }
+.blueBar {
+  width: 3px;
+  display: inline-block;
+  margin-left: 2px;
+  background-color: #1c1cf0;
+  text-align: center;
+}
 
 .makeTextBold {
   font-weight: bolder;
