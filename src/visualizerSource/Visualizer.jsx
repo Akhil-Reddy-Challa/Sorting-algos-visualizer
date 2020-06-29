@@ -108,6 +108,7 @@ class Visualizer extends Component {
   heapSort = async () => {
     let array = this.state.list;
     var temp;
+    var timeToPause = this.getTimeToPause(array.length);
     var arr_len = array.length; //Get array length
     console.log("Unsorted array is: ", array);
     for (var i = 1; i < arr_len; i++) {
@@ -115,22 +116,21 @@ class Visualizer extends Component {
       var parentIndex = Math.floor((i - 1) / 2);
       //Now highlight the  nodes that we are comparing
       this.changeColorOnNodes("blue", i, parentIndex);
-      await this.sleep(1000);
+      await this.sleep(timeToPause);
       if (array[i] > array[parentIndex]) {
         var j = i;
-        parentIndex = Math.floor((j - 1) / 2);
 
         // swap child and parent until
         // parent is smaller
-        while (array[j] > array[parentIndex]) {
+        while (array[j] > array[Math.floor((j - 1) / 2)]) {
           //Now chagne color to red
-          this.changeColorOnNodes("red", j, parentIndex);
-          await this.sleep(1000);
-          this.swap(array, j, parentIndex);
+          this.changeColorOnNodes("red", j, Math.floor((j - 1) / 2));
+          await this.sleep(timeToPause);
+          this.swap(array, j, Math.floor((j - 1) / 2));
           this.setState({ array });
           //Now chage color back to normal
-          this.changeColorOnNodes("normal", j, parentIndex);
-          j = parentIndex;
+          this.changeColorOnNodes("normal", j, Math.floor((j - 1) / 2));
+          j = Math.floor((j - 1) / 2);
         }
       }
       //If if is not executed, the color would be blue so change to normal
@@ -153,20 +153,25 @@ class Visualizer extends Component {
         rightChild = leftChild + 1; //Just for display
         this.changeColorOnNodes("blue", j, leftChild);
         this.changeColorOnNodes("blue", rightChild, leftChild);
-        await this.sleep(1000);
+        await this.sleep(timeToPause);
         // if left child is smaller than
         // right child point leftChild variable
         // to right child
-        if (leftChild < i - 1 && array[leftChild] < array[leftChild + 1])
+        if (leftChild < i - 1 && array[leftChild] < array[leftChild + 1]) {
           leftChild++;
-
+        }
+        //This condition is for only changing colors, not a sorting logic
+        if (leftChild !== 2 * j + 1) {
+          this.changeColorOnNodes("normal", 2 * j + 1, 2 * j + 1);
+          this.changeColorOnNodes("blue", leftChild, leftChild);
+        }
         // if parent is smaller than child
         // then swapping parent with child
         // having higher value
         if (leftChild < i && array[j] < array[leftChild]) {
           //Discrepancy, now change color to res
           this.changeColorOnNodes("red", j, leftChild);
-          await this.sleep(1000);
+          await this.sleep(timeToPause);
           this.swap(array, j, leftChild);
           this.setState({ array });
         }
@@ -176,21 +181,6 @@ class Visualizer extends Component {
       } while (leftChild < i);
     }
     console.log("Sorted array is: ", array);
-  };
-  buildMaxHeap = (array, n) => {
-    for (var i = 1; i < n; i++) {
-      // if child is bigger than parent
-      if (array[i] > array[Math.floor((i - 1) / 2)]) {
-        var j = i;
-
-        // swap child and parent until
-        // parent is smaller
-        while (array[j] > array[Math.floor((j - 1) / 2)]) {
-          this.swap(array, j, Math.floor((j - 1) / 2));
-          j = Math.floor((j - 1) / 2);
-        }
-      }
-    }
   };
   swap = (array, i, j) => {
     var temp = array[i];
