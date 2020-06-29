@@ -1,37 +1,36 @@
 import React, { Component } from "react";
 
-const getColor = {
-  "background-color": "#1affff",
-};
 class Visualizer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: [],
-      NUMBER_OF_ARRAY_BARS: 40,
+      list: [40, 50, 30, 20, 10],
+      NUMBER_OF_ARRAY_BARS: 5,
     };
   }
   getNumberOnBar = (bar_count) => {
-    if (bar_count <= 40) return "aliceblue";
+    if (bar_count <= 65) return "aliceblue";
     else return "transparent";
   };
-  getWidthOfBars = (bar_count) => {
-    let width; //set default value
-    if (bar_count <= 7) width = 265;
-    else if (bar_count <= 20) width = 91.5;
-    else if (bar_count <= 40) width = 44;
-    else if (bar_count <= 80) width = 20;
-    else if (bar_count <= 160) width = 8;
-    else if (bar_count <= 213) width = 4;
-    else width = 3;
-    return width;
-    //console.log(width);
-  };
+  getWidthOfBars = (bar_count, screen_width) => {
+    //Now we have screen_width to dyanmically adjust with various devices
+    //1) We have bar_width + margin(default: 2px) in CSS
+    var width;
+    //Now decrease screen_width by 20px (Because of the Scroll bar intervention)
+    screen_width -= 20;
+    //Now decrease the margin size from screen_width, because each bar consumes 2px has margin-right
+    //Decrease total screen_width by (margin * Number_of_bars)
+    screen_width = screen_width - bar_count * 2;
 
+    width = screen_width / bar_count; //Now this gives us the width for number_of_bars
+    //console.log(width);
+
+    return width;
+  };
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
-    const max = 275;
+    const max = 255;
     const list = [];
     for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++)
       list.push(Math.trunc(min + Math.random() * (max - min)));
@@ -39,66 +38,173 @@ class Visualizer extends Component {
   };
   generateNewValues = () => {
     //Now delete all elements in array, so that we can use above method(generateValuesInArray)
-    this.state.list.length = 0; //This will empty the array( Reference: https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript)
+    //this.state.list.length = 0; //This will empty the array( Reference: https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript)
+    this.setState({ list: [] });
     //console.log(this.state.NUMBER_OF_ARRAY_BARS);
     //console.log("I am here now ");
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
   };
   reSizeArray = (event) => {
-    console.log("User Selected: ", event.target.value);
+    //console.log("User Selected: ", event.target.value);
     //User select a value
     //Now update the array size
-    this.state.NUMBER_OF_ARRAY_BARS = event.target.value;
-    this.generateNewValues();
+    this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
+      this.generateNewValues();
+    });
+    /*
+    The setState() operation is asynchronous and hence your console.log() will be executed before the setState() mutates the values and hence you see the result.
+
+    To solve this: we have included this.geneateNewValues() in it's call back area
+    */
   };
-  sortValues = () => {
-    //Bubble Sort
+  getTimeToPause = (numberOfElements) => {
+    if (numberOfElements < 20) return 100;
+    // almost 1 sec
+    else if (numberOfElements < 40) return 70;
+    // greater than 1/2 Second
+    else if (numberOfElements < 100) return 40;
+    // less than 1/2 seconds
+    else if (numberOfElements < 200) return 15;
+    // 90 milliseconds
+    else return 1;
+  };
+  changeColorOnNodes = (color, leftChild1, leftChild2) => {
+    if (document.getElementById(leftChild1) != null)
+      document.getElementById(leftChild1).setAttribute("class", color + "Bar");
+    if (document.getElementById(leftChild2) != null)
+      document.getElementById(leftChild2).setAttribute("class", color + "Bar");
+  };
+  sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+  bubbleSort = async () => {
     let array = this.state.list;
-    console.log("Array : ", array);
-
-    const leng_of_array = array.length;
-    let temp = 0,
-      counter = 1;
+    let temp = 0;
+    var timeToPause = this.getTimeToPause(array.length);
+    let leng_of_array = array.length;
     for (let i = 0; i < leng_of_array - 1; i++) {
-      for (let j = i + 1; j < leng_of_array; j++) {
-        //Working with array[i] , array[j]
-        console.log("Working with: ", array[i], array[j]);
-        setTimeout(() => {
-          console.log("Changing colors of i,j : ", i, j, array[i], array[j]);
-          document.getElementById(i).setAttribute("class", "redBar");
-          document.getElementById(j).setAttribute("class", "redBar");
-        }, counter * 0);
-
-        //console.log(" Time taken would be: ", counter * 50);
-        if (array[i] > array[j]) {
-          temp = array[i];
-          array[i] = array[j];
-          array[j] = temp;
-          console.log("Swapped & array is: ", array);
+      for (let j = 0; j < leng_of_array - 1; j++) {
+        //Now highlight two nodes that we are comparing
+        this.changeColorOnNodes("blue", j, j + 1);
+        await this.sleep(timeToPause);
+        if (array[j] > array[j + 1]) {
+          //Change color to red because they are unsorted
+          this.changeColorOnNodes("red", j, j + 1);
+          //Freeze for 1 sec
+          await this.sleep(timeToPause);
+          //Now swap elements and change the list array
+          temp = array[j];
+          array[j] = array[j + 1];
+          array[j + 1] = temp;
+          this.setState({ array });
         }
-        counter++;
+        //Now change color back to normal
+        this.changeColorOnNodes("normal", j, j + 1);
       }
     }
-    this.setState({ array });
-    console.log("Sorted array: ", array);
+    //this.setState({ array });
   };
 
-  traverseArray = () => {
-    const leng_of_array = this.state.list.length;
-    let original_array = this.state.list;
-    for (let i = 0; i < leng_of_array; i++) {
-      setTimeout(() => {
-        console.log("Element", i);
-        document.getElementById(i).setAttribute("class", "redBar");
-      }, i * 40);
+  heapSort = async () => {
+    let array = this.state.list;
+    var temp;
+    var arr_len = array.length; //Get array length
+    console.log("Unsorted array is: ", array);
+    for (var i = 1; i < arr_len; i++) {
+      // if child is bigger than parent
+      var parentIndex = Math.floor((i - 1) / 2);
+      //Now highlight the  nodes that we are comparing
+      this.changeColorOnNodes("blue", i, parentIndex);
+      await this.sleep(1000);
+      if (array[i] > array[parentIndex]) {
+        var j = i;
+        parentIndex = Math.floor((j - 1) / 2);
+
+        // swap child and parent until
+        // parent is smaller
+        while (array[j] > array[parentIndex]) {
+          //Now chagne color to red
+          this.changeColorOnNodes("red", j, parentIndex);
+          await this.sleep(1000);
+          this.swap(array, j, parentIndex);
+          this.setState({ array });
+          //Now chage color back to normal
+          this.changeColorOnNodes("normal", j, parentIndex);
+          j = parentIndex;
+        }
+      }
+      //If if is not executed, the color would be blue so change to normal
+      this.changeColorOnNodes("normal", i, parentIndex);
     }
-    clearTimeout();
-    this.setState({ original_array });
+
+    for (var i = arr_len - 1; i > 0; i--) {
+      // swap value of first index
+      // with last index
+      this.swap(array, 0, i);
+      this.setState({ array });
+      // maintaining heap property
+      // after each swapping
+      var j = 0,
+        leftChild,
+        rightChild;
+
+      do {
+        leftChild = 2 * j + 1;
+        rightChild = leftChild + 1; //Just for display
+        this.changeColorOnNodes("blue", j, leftChild);
+        this.changeColorOnNodes("blue", rightChild, leftChild);
+        await this.sleep(1000);
+        // if left child is smaller than
+        // right child point leftChild variable
+        // to right child
+        if (leftChild < i - 1 && array[leftChild] < array[leftChild + 1])
+          leftChild++;
+
+        // if parent is smaller than child
+        // then swapping parent with child
+        // having higher value
+        if (leftChild < i && array[j] < array[leftChild]) {
+          //Discrepancy, now change color to res
+          this.changeColorOnNodes("red", j, leftChild);
+          await this.sleep(1000);
+          this.swap(array, j, leftChild);
+          this.setState({ array });
+        }
+        this.changeColorOnNodes("normal", j, leftChild);
+        this.changeColorOnNodes("normal", rightChild, leftChild);
+        j = leftChild;
+      } while (leftChild < i);
+    }
+    console.log("Sorted array is: ", array);
+  };
+  buildMaxHeap = (array, n) => {
+    for (var i = 1; i < n; i++) {
+      // if child is bigger than parent
+      if (array[i] > array[Math.floor((i - 1) / 2)]) {
+        var j = i;
+
+        // swap child and parent until
+        // parent is smaller
+        while (array[j] > array[Math.floor((j - 1) / 2)]) {
+          this.swap(array, j, Math.floor((j - 1) / 2));
+          j = Math.floor((j - 1) / 2);
+        }
+      }
+    }
+  };
+  swap = (array, i, j) => {
+    var temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
   };
   render() {
     const { list } = this.state;
-    let widthOfBar = this.getWidthOfBars(this.state.NUMBER_OF_ARRAY_BARS);
-    let displayNumberOnBar = this.getNumberOnBar(
+    var widthOfBar = this.getWidthOfBars(
+      this.state.NUMBER_OF_ARRAY_BARS,
+      window.innerWidth
+    );
+
+    var displayNumberOnBar = this.getNumberOnBar(
       this.state.NUMBER_OF_ARRAY_BARS
     );
     return (
@@ -112,38 +218,45 @@ class Visualizer extends Component {
             type="range"
             id="slider"
             name="Slider"
-            defaultValue="7"
-            min="7"
-            max="274"
+            defaultValue="3"
+            min="3"
+            max="400"
             onChange={this.reSizeArray}
           />
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" onClick={this.traverseArray}>
-                  Traverse Each Element
+                <a href="#" onClick={() => this.heapSort()}>
+                  Heap-Sort
                 </a>
               </li>
               <li>
-                <a href="#">Algorithm-2</a>
+                <a href="#" onClick={() => this.bubbleSort()}>
+                  Bubble-Sort
+                </a>
               </li>
               <li>
-                <a href="#">Algorithm-3</a>
+                <a href="#" onClick={() => this.mergeSort()}>
+                  Merge-Sort
+                </a>
               </li>
             </div>
           </nav>
-          <a className="cta" href="#" onClick={this.sortValues}>
-            Sort
+          <a className="cta" href="#">
+            Blank
           </a>
         </header>
         <div className="container">
-          {this.state.list.map((number, index) => (
+          {this.state.list.map((number, leftChild) => (
             <div
               className="normalBar"
-              id={index}
+              id={leftChild}
+              key={leftChild}
               style={{ height: number * 3, width: widthOfBar }}
             >
-              <p style={{ color: displayNumberOnBar }}>{number}</p>
+              <p className="makeTextBold" style={{ color: displayNumberOnBar }}>
+                {number}
+              </p>
             </div>
           ))}
         </div>
@@ -152,4 +265,74 @@ class Visualizer extends Component {
   }
 }
 
-export default Visualizer; //style={{ color: "transparent" }}
+export default Visualizer;
+/*
+    for (var i = arr_len / 2 - 1; i >= 0; i--) {
+      this.heapify(array, arr_len, Math.floor(i));
+      await this.sleep(3000);
+    }
+    console.log("End of 1st for-loop and arr is ", array);
+
+    for (i = arr_len - 1; i >= 0; i--) {
+      // //Now highlight two nodes that we are comparing
+      // this.changeColorOnNodes("blue", 0, i);
+      //await this.sleep(100);
+      temp = array[0]; //swapElements
+      array[0] = array[i];
+      array[i] = temp;
+
+      this.setState({ array });
+      //this.changeColorOnNodes("normal", 0, i); //Now change color back to normal
+      this.heapify(array, i, 0);
+      //await this.sleep(5000);
+      await this.sleep(3500);
+    }
+*/
+/*
+    var temp;
+    var lei = leftChild; //largestElementleftChild
+    var lci = 2 * leftChild + 1; //leftChildleftChild
+    var rci = 2 * leftChild + 2; //rightChildleftChild
+    //Now highlight the three nodes that we are comparing
+    this.changeColorOnNodes("blue", lei, lci);
+    this.changeColorOnNodes("blue", lci, rci);
+    console.log(
+      "I am here changing colors of 3 elements to blue",
+      lei,
+      lci,
+      rci
+    );
+    await this.sleep(10);
+    if (lci < arr_len && array[lci] > array[lei]) {
+      console.log("leftChild > leftChild");
+      //Discrepancy detected, so change the color on bar to RED
+      this.changeColorOnNodes("red", lci, lei);
+      //Show the red color for some time
+      await this.sleep(50);
+      lei = lci;
+    }
+    if (rci < arr_len && array[rci] > array[lei]) {
+      console.log("rightChild > leftChild");
+      //Discrepancy detected, so change the color on bar to RED
+      this.changeColorOnNodes("red", rci, lei);
+      //Show the red color for some time
+      await this.sleep(50);
+      lei = rci;
+    }
+    if (lei !== leftChild) {
+      console.log("I found discrepancy so swapping elements here");
+      temp = array[leftChild]; //swapElements
+      array[leftChild] = array[lei];
+      array[lei] = temp;
+      console.log("Now array is", array);
+      this.changeColorOnNodes("normal", lei, lci);
+      this.changeColorOnNodes("normal", lci, rci);
+      this.setState({ array });
+      await this.sleep(50);
+      this.heapify(array, arr_len, lei);
+    }
+    //If swap not done, change colors back to normal
+    this.changeColorOnNodes("normal", lei, lci);
+    this.changeColorOnNodes("normal", lci, rci);
+    console.log("Changed colors back to normal");
+    await this.sleep(50);*/
