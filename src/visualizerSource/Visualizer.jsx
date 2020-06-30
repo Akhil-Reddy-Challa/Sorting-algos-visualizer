@@ -110,7 +110,7 @@ class Visualizer extends Component {
     var temp;
     var timeToPause = this.getTimeToPause(array.length);
     var arr_len = array.length; //Get array length
-    console.log("Unsorted array is: ", array);
+    //console.log("Unsorted array is: ", array);
     for (var i = 1; i < arr_len; i++) {
       // if child is bigger than parent
       var parentIndex = Math.floor((i - 1) / 2);
@@ -180,7 +180,7 @@ class Visualizer extends Component {
         j = leftChild;
       } while (leftChild < i);
     }
-    console.log("Sorted array is: ", array);
+    //console.log("Sorted array is: ", array);
   };
   swap = (array, i, j) => {
     var temp = array[i];
@@ -256,73 +256,3 @@ class Visualizer extends Component {
 }
 
 export default Visualizer;
-/*
-    for (var i = arr_len / 2 - 1; i >= 0; i--) {
-      this.heapify(array, arr_len, Math.floor(i));
-      await this.sleep(3000);
-    }
-    console.log("End of 1st for-loop and arr is ", array);
-
-    for (i = arr_len - 1; i >= 0; i--) {
-      // //Now highlight two nodes that we are comparing
-      // this.changeColorOnNodes("blue", 0, i);
-      //await this.sleep(100);
-      temp = array[0]; //swapElements
-      array[0] = array[i];
-      array[i] = temp;
-
-      this.setState({ array });
-      //this.changeColorOnNodes("normal", 0, i); //Now change color back to normal
-      this.heapify(array, i, 0);
-      //await this.sleep(5000);
-      await this.sleep(3500);
-    }
-*/
-/*
-    var temp;
-    var lei = leftChild; //largestElementleftChild
-    var lci = 2 * leftChild + 1; //leftChildleftChild
-    var rci = 2 * leftChild + 2; //rightChildleftChild
-    //Now highlight the three nodes that we are comparing
-    this.changeColorOnNodes("blue", lei, lci);
-    this.changeColorOnNodes("blue", lci, rci);
-    console.log(
-      "I am here changing colors of 3 elements to blue",
-      lei,
-      lci,
-      rci
-    );
-    await this.sleep(10);
-    if (lci < arr_len && array[lci] > array[lei]) {
-      console.log("leftChild > leftChild");
-      //Discrepancy detected, so change the color on bar to RED
-      this.changeColorOnNodes("red", lci, lei);
-      //Show the red color for some time
-      await this.sleep(50);
-      lei = lci;
-    }
-    if (rci < arr_len && array[rci] > array[lei]) {
-      console.log("rightChild > leftChild");
-      //Discrepancy detected, so change the color on bar to RED
-      this.changeColorOnNodes("red", rci, lei);
-      //Show the red color for some time
-      await this.sleep(50);
-      lei = rci;
-    }
-    if (lei !== leftChild) {
-      console.log("I found discrepancy so swapping elements here");
-      temp = array[leftChild]; //swapElements
-      array[leftChild] = array[lei];
-      array[lei] = temp;
-      console.log("Now array is", array);
-      this.changeColorOnNodes("normal", lei, lci);
-      this.changeColorOnNodes("normal", lci, rci);
-      this.setState({ array });
-      await this.sleep(50);
-      this.heapify(array, arr_len, lei);
-    }
-    //If swap not done, change colors back to normal
-    this.changeColorOnNodes("normal", lei, lci);
-    this.changeColorOnNodes("normal", lci, rci);
-    console.log("Changed colors back to normal");
-    await this.sleep(50);*/
