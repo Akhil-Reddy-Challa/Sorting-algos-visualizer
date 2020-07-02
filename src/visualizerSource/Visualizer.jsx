@@ -45,9 +45,12 @@ class Visualizer extends Component {
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
   };
   reSizeArray = (event) => {
-    //console.log("User Selected: ", event.target.value);
+    console.log("User Selected: ", event.target.value);
     //User select a value
     //Now update the array size
+
+    console.log("Value increased than current");
+
     this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
       this.generateNewValues();
     });
@@ -107,7 +110,6 @@ class Visualizer extends Component {
 
   heapSort = async () => {
     let array = this.state.list;
-    var temp;
     var timeToPause = this.getTimeToPause(array.length);
     var arr_len = array.length; //Get array length
     //console.log("Unsorted array is: ", array);
@@ -137,16 +139,15 @@ class Visualizer extends Component {
       this.changeColorOnNodes("normal", i, parentIndex);
     }
 
-    for (var i = arr_len - 1; i > 0; i--) {
+    for (i = arr_len - 1; i > 0; i--) {
       // swap value of first index
       // with last index
       this.swap(array, 0, i);
       this.setState({ array });
       // maintaining heap property
       // after each swapping
-      var j = 0,
-        leftChild,
-        rightChild;
+      j = 0;
+      var leftChild, rightChild;
 
       do {
         leftChild = 2 * j + 1;
@@ -188,7 +189,7 @@ class Visualizer extends Component {
     array[j] = temp;
   };
   render() {
-    const { list } = this.state;
+    //const { list } = this.state;
     var widthOfBar = this.getWidthOfBars(
       this.state.NUMBER_OF_ARRAY_BARS,
       window.innerWidth
