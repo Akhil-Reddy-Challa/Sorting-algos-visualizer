@@ -45,20 +45,15 @@ class Visualizer extends Component {
     this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
   };
   reSizeArray = (event) => {
-    console.log("User Selected: ", event.target.value);
-    //User select a value
+    //console.log("User Selected: ", event.target.value);
+    //User selects a value
     //Now update the array size
 
-    console.log("Value increased than current");
+    //console.log("Value increased than current");
 
     this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
       this.generateNewValues();
     });
-    /*
-    The setState() operation is asynchronous and hence your console.log() will be executed before the setState() mutates the values and hence you see the result.
-
-    To solve this: we have included this.geneateNewValues() in it's call back area
-    */
   };
   getTimeToPause = (numberOfElements) => {
     if (numberOfElements < 20) return 100;
@@ -71,11 +66,9 @@ class Visualizer extends Component {
     // 90 milliseconds
     else return 1;
   };
-  changeColorOnNodes = (color, leftChild1, leftChild2) => {
-    if (document.getElementById(leftChild1) != null)
-      document.getElementById(leftChild1).setAttribute("class", color + "Bar");
-    if (document.getElementById(leftChild2) != null)
-      document.getElementById(leftChild2).setAttribute("class", color + "Bar");
+  changeColorOnNodes = (color, elementID) => {
+    if (document.getElementById(elementID) != null)
+      document.getElementById(elementID).setAttribute("class", color + "Bar");
   };
   sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -88,11 +81,13 @@ class Visualizer extends Component {
     for (let i = 0; i < leng_of_array - 1; i++) {
       for (let j = 0; j < leng_of_array - 1; j++) {
         //Now highlight two nodes that we are comparing
-        this.changeColorOnNodes("blue", j, j + 1);
+        this.changeColorOnNodes("blue", j);
+        this.changeColorOnNodes("blue", j + 1);
         await this.sleep(timeToPause);
         if (array[j] > array[j + 1]) {
           //Change color to red because they are unsorted
-          this.changeColorOnNodes("red", j, j + 1);
+          this.changeColorOnNodes("red", j);
+          this.changeColorOnNodes("red", j + 1);
           //Freeze for 1 sec
           await this.sleep(timeToPause);
           //Now swap elements and change the list array
@@ -102,7 +97,8 @@ class Visualizer extends Component {
           this.setState({ array });
         }
         //Now change color back to normal
-        this.changeColorOnNodes("normal", j, j + 1);
+        this.changeColorOnNodes("normal", j);
+        this.changeColorOnNodes("normal", j + 1);
       }
     }
     //this.setState({ array });
@@ -117,7 +113,8 @@ class Visualizer extends Component {
       // if child is bigger than parent
       var parentIndex = Math.floor((i - 1) / 2);
       //Now highlight the  nodes that we are comparing
-      this.changeColorOnNodes("blue", i, parentIndex);
+      this.changeColorOnNodes("blue", i);
+      this.changeColorOnNodes("blue", parentIndex);
       await this.sleep(timeToPause);
       if (array[i] > array[parentIndex]) {
         var j = i;
@@ -126,17 +123,20 @@ class Visualizer extends Component {
         // parent is smaller
         while (array[j] > array[Math.floor((j - 1) / 2)]) {
           //Now chagne color to red
-          this.changeColorOnNodes("red", j, Math.floor((j - 1) / 2));
+          this.changeColorOnNodes("red", j);
+          this.changeColorOnNodes("red", Math.floor((j - 1) / 2));
           await this.sleep(timeToPause);
           this.swap(array, j, Math.floor((j - 1) / 2));
           this.setState({ array });
           //Now chage color back to normal
-          this.changeColorOnNodes("normal", j, Math.floor((j - 1) / 2));
+          this.changeColorOnNodes("normal", j);
+          this.changeColorOnNodes("normal", Math.floor((j - 1) / 2));
           j = Math.floor((j - 1) / 2);
         }
       }
       //If if is not executed, the color would be blue so change to normal
-      this.changeColorOnNodes("normal", i, parentIndex);
+      this.changeColorOnNodes("normal", i);
+      this.changeColorOnNodes("normal", parentIndex);
     }
 
     for (i = arr_len - 1; i > 0; i--) {
@@ -189,7 +189,6 @@ class Visualizer extends Component {
     array[j] = temp;
   };
   render() {
-    //const { list } = this.state;
     var widthOfBar = this.getWidthOfBars(
       this.state.NUMBER_OF_ARRAY_BARS,
       window.innerWidth
@@ -238,11 +237,11 @@ class Visualizer extends Component {
           </a>
         </header>
         <div className="container">
-          {this.state.list.map((number, leftChild) => (
+          {this.state.list.map((number, indexOfElement) => (
             <div
               className="normalBar"
-              id={leftChild}
-              key={leftChild}
+              id={indexOfElement}
+              key={indexOfElement}
               style={{ height: number * 3, width: widthOfBar }}
             >
               <p className="makeTextBold" style={{ color: displayNumberOnBar }}>
