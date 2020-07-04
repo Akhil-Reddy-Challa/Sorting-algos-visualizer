@@ -5,7 +5,7 @@ class Visualizer extends Component {
     super(props);
 
     this.state = {
-      list: [40, 50, 30, 20, 10],
+      list: [50, 40, 30, 20, 10],
       NUMBER_OF_ARRAY_BARS: 5,
     };
   }
@@ -188,6 +188,39 @@ class Visualizer extends Component {
     array[i] = array[j];
     array[j] = temp;
   };
+  insertionSort = async () => {
+    let array = this.state.list;
+    let temp = 0;
+    var timeToPause = this.getTimeToPause(array.length); //Based on number of array elements, get the time to pause
+    let leng_of_array = array.length;
+    var key, j;
+    for (var i = 1; i < leng_of_array; i++) {
+      key = array[i];
+      j = i - 1;
+      //Now highlight the above two elements for comparision
+      this.changeColorOnNodes("blue", i);
+      this.changeColorOnNodes("blue", j);
+      await this.sleep(timeToPause);
+      while (j >= 0 && array[j] > key) {
+        //Now we found highest element in left side, so swap
+        //Change colors to red
+        this.changeColorOnNodes("red", j);
+        this.changeColorOnNodes("red", j + 1);
+        await this.sleep(timeToPause);
+        array[j + 1] = array[j];
+        j -= 1;
+        //Change colors back to normal
+        this.changeColorOnNodes("normal", j + 1);
+        this.changeColorOnNodes("normal", j + 2);
+        this.setState({ array });
+      }
+      array[j + 1] = key;
+      this.changeColorOnNodes("normal", i);
+      //If the array is already sorted, the initial blue color stays, so to avoid that
+      this.changeColorOnNodes("normal", j);
+      this.setState({ array });
+    }
+  };
   render() {
     var widthOfBar = this.getWidthOfBars(
       this.state.NUMBER_OF_ARRAY_BARS,
@@ -226,8 +259,8 @@ class Visualizer extends Component {
                 </a>
               </li>
               <li>
-                <a href="#" onClick={() => this.mergeSort()}>
-                  Merge-Sort
+                <a href="#" onClick={() => this.insertionSort()}>
+                  Insertion-Sort
                 </a>
               </li>
             </div>
