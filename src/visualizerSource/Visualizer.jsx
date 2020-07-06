@@ -56,15 +56,15 @@ class Visualizer extends Component {
     });
   };
   getTimeToPause = (numberOfElements) => {
-    if (numberOfElements < 20) return 100;
+    if (numberOfElements < 20) return 80;
     // almost 1 sec
-    else if (numberOfElements < 40) return 70;
+    else if (numberOfElements < 40) return 40;
     // greater than 1/2 Second
-    else if (numberOfElements < 100) return 40;
+    else if (numberOfElements < 100) return 20;
     // less than 1/2 seconds
-    else if (numberOfElements < 200) return 15;
+    else if (numberOfElements < 200) return 8;
     // 90 milliseconds
-    else return 1;
+    else return 0.5;
   };
   changeColorOnNodes = (color, elementID) => {
     if (document.getElementById(elementID) != null)
@@ -74,6 +74,7 @@ class Visualizer extends Component {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
   bubbleSort = async () => {
+    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
     let array = this.state.list;
     let temp = 0;
     var timeToPause = this.getTimeToPause(array.length);
@@ -101,10 +102,10 @@ class Visualizer extends Component {
         this.changeColorOnNodes("normal", j + 1);
       }
     }
-    //this.setState({ array });
+    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
   };
-
   heapSort = async () => {
+    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
     let array = this.state.list;
     var timeToPause = this.getTimeToPause(array.length);
     var arr_len = array.length; //Get array length
@@ -181,7 +182,7 @@ class Visualizer extends Component {
         j = leftChild;
       } while (leftChild < i);
     }
-    //console.log("Sorted array is: ", array);
+    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
   };
   swap = (array, i, j) => {
     var temp = array[i];
@@ -189,6 +190,7 @@ class Visualizer extends Component {
     array[j] = temp;
   };
   insertionSort = async () => {
+    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
     let array = this.state.list;
     let temp = 0;
     var timeToPause = this.getTimeToPause(array.length); //Based on number of array elements, get the time to pause
@@ -220,6 +222,7 @@ class Visualizer extends Component {
       this.changeColorOnNodes("normal", j);
       this.setState({ array });
     }
+    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
     var widthOfBar = this.getWidthOfBars(
@@ -234,7 +237,12 @@ class Visualizer extends Component {
       <div>
         <header>
           <p>Visualizer</p>
-          <a className="cta" href="#" onClick={this.generateNewValues}>
+          <a
+            className="cta"
+            href="#"
+            id="generateNewValuesButton"
+            onClick={this.generateNewValues}
+          >
             Generate New Values!
           </a>
           <input
@@ -249,24 +257,35 @@ class Visualizer extends Component {
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" onClick={() => this.heapSort()}>
+                <a href="#" id="heapSort" onClick={() => this.heapSort()}>
                   Heap-Sort
                 </a>
               </li>
               <li>
-                <a href="#" onClick={() => this.bubbleSort()}>
+                <a href="#" id="bubbleSort" onClick={() => this.bubbleSort()}>
                   Bubble-Sort
                 </a>
               </li>
               <li>
-                <a href="#" onClick={() => this.insertionSort()}>
+                <a
+                  href="#"
+                  id="insertionSort"
+                  onClick={() => this.insertionSort()}
+                >
                   Insertion-Sort
                 </a>
               </li>
             </div>
           </nav>
-          <a className="cta" href="#">
-            Blank
+          <a
+            className="cta"
+            id="stopButton"
+            href="#"
+            onClick={() => {
+              window.location.reload(false);
+            }}
+          >
+            Stop!
           </a>
         </header>
         <div className="container">
@@ -289,3 +308,12 @@ class Visualizer extends Component {
 }
 
 export default Visualizer;
+function disableAllButtons(displayMode) {
+  document.getElementById("bubbleSort").style.display = displayMode;
+  document.getElementById("heapSort").style.display = displayMode;
+  document.getElementById("insertionSort").style.display = displayMode;
+  document.getElementById("slider").style.display = displayMode;
+  document.getElementById(
+    "generateNewValuesButton"
+  ).style.display = displayMode;
+}
