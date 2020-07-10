@@ -74,7 +74,7 @@ class Visualizer extends Component {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
   bubbleSort = async () => {
-    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
+    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
     let array = this.state.list;
     let temp = 0;
     var timeToPause = this.getTimeToPause(array.length);
@@ -102,10 +102,10 @@ class Visualizer extends Component {
         this.changeColorOnNodes("normal", j + 1);
       }
     }
-    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
+    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   heapSort = async () => {
-    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
+    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
     let array = this.state.list;
     var timeToPause = this.getTimeToPause(array.length);
     var arr_len = array.length; //Get array length
@@ -182,7 +182,7 @@ class Visualizer extends Component {
         j = leftChild;
       } while (leftChild < i);
     }
-    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
+    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   swap = (array, i, j) => {
     var temp = array[i];
@@ -190,7 +190,7 @@ class Visualizer extends Component {
     array[j] = temp;
   };
   insertionSort = async () => {
-    disableAllButtons("none"); //This will disable all the Sort buttons on the screen, will re-enable after sorting
+    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
     let array = this.state.list;
     let temp = 0;
     var timeToPause = this.getTimeToPause(array.length); //Based on number of array elements, get the time to pause
@@ -222,7 +222,7 @@ class Visualizer extends Component {
       this.changeColorOnNodes("normal", j);
       this.setState({ array });
     }
-    disableAllButtons("flex"); //This will re-enable all the Sort buttons on the screen.
+    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
     var widthOfBar = this.getWidthOfBars(
@@ -281,6 +281,7 @@ class Visualizer extends Component {
             className="cta"
             id="stopButton"
             href="#"
+            style={{ display: "none" }}
             onClick={() => {
               window.location.reload(false);
             }}
@@ -308,12 +309,22 @@ class Visualizer extends Component {
 }
 
 export default Visualizer;
-function disableAllButtons(displayMode) {
-  document.getElementById("bubbleSort").style.display = displayMode;
-  document.getElementById("heapSort").style.display = displayMode;
-  document.getElementById("insertionSort").style.display = displayMode;
-  document.getElementById("slider").style.display = displayMode;
+function disableAllButtons(
+  displayModeForSortButtons,
+  displayModeForStopButton
+) {
+  document.getElementById(
+    "bubbleSort"
+  ).style.display = displayModeForSortButtons;
+  document.getElementById("heapSort").style.display = displayModeForSortButtons;
+  document.getElementById(
+    "insertionSort"
+  ).style.display = displayModeForSortButtons;
+  document.getElementById("slider").style.display = displayModeForSortButtons;
   document.getElementById(
     "generateNewValuesButton"
-  ).style.display = displayMode;
+  ).style.display = displayModeForSortButtons;
+  document.getElementById(
+    "stopButton"
+  ).style.display = displayModeForStopButton;
 }
