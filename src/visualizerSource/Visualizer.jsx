@@ -5,8 +5,8 @@ class Visualizer extends Component {
     super(props);
 
     this.state = {
-      list: [50, 40, 30, 20, 10],
-      NUMBER_OF_ARRAY_BARS: 5,
+      list: [120, 110, 130, 50, 60, 70],
+      NUMBER_OF_ARRAY_BARS: 6,
     };
   }
   getNumberOnBar = (bar_count) => {
@@ -234,7 +234,7 @@ class Visualizer extends Component {
 
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
-  merge_sort_array_breaking = (array, l, r) => {
+  merge_sort_array_breaking = async (array, l, r) => {
     if (l < r) {
       // Find the middle point
       let m = parseInt((l + r) / 2);
@@ -251,6 +251,8 @@ class Visualizer extends Component {
   merging_the_sorted_arrays = async (array, l, m, r) => {
     let n1 = m - l + 1;
     let n2 = r - m;
+    //console.log("start: ", l, " mid: ", m, " last: ", r);
+    //console.log("n1: ", n1, " n2: ", n2);
     let left_array = [];
     let right_array = [];
     for (let i = 0; i < n1; ++i) left_array.push(array[l + i]);
@@ -259,17 +261,7 @@ class Visualizer extends Component {
       j = 0;
     let k = l;
     while (i < n1 && j < n2) {
-      //Now highlight two nodes that we are comparing
-      this.changeColorOnNodes("blue", i);
-      this.changeColorOnNodes("blue", j);
-      await this.sleep(1000);
       if (left_array[i] <= right_array[j]) {
-        //Change color to red because they are unsorted
-        this.changeColorOnNodes("red");
-        this.changeColorOnNodes("red", j + 1);
-        //Freeze for 1 sec
-        await this.sleep(timeToPause);
-        //Now swap elements and change the list array
         array[k] = left_array[i];
         i++;
       } else {
