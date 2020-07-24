@@ -74,7 +74,7 @@ class Visualizer extends Component {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
   bubbleSort = async () => {
-    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
+    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for display style of stop button
     let array = this.state.list;
     let temp = 0;
     var timeToPause = this.getTimeToPause(array.length);
@@ -224,6 +224,71 @@ class Visualizer extends Component {
     }
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
+  mergeSort = () => {
+    disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
+    let array = this.state.list;
+    console.log(array);
+    this.merge_sort_array_breaking(array, 0, array.length - 1);
+    this.setState({ array });
+    console.log(array);
+
+    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
+  };
+  merge_sort_array_breaking = (array, l, r) => {
+    if (l < r) {
+      // Find the middle point
+      let m = parseInt((l + r) / 2);
+      //console.log("l,m,r is: ", l, m, r);
+
+      // Sort first and second halves
+      this.merge_sort_array_breaking(array, l, m);
+      this.merge_sort_array_breaking(array, m + 1, r);
+
+      // Merge the sorted halves
+      this.merging_the_sorted_arrays(array, l, m, r);
+    }
+  };
+  merging_the_sorted_arrays = async (array, l, m, r) => {
+    let n1 = m - l + 1;
+    let n2 = r - m;
+    let left_array = [];
+    let right_array = [];
+    for (let i = 0; i < n1; ++i) left_array.push(array[l + i]);
+    for (let j = 0; j < n2; ++j) right_array.push(array[m + 1 + j]);
+    let i = 0,
+      j = 0;
+    let k = l;
+    while (i < n1 && j < n2) {
+      //Now highlight two nodes that we are comparing
+      this.changeColorOnNodes("blue", i);
+      this.changeColorOnNodes("blue", j);
+      await this.sleep(1000);
+      if (left_array[i] <= right_array[j]) {
+        //Change color to red because they are unsorted
+        this.changeColorOnNodes("red");
+        this.changeColorOnNodes("red", j + 1);
+        //Freeze for 1 sec
+        await this.sleep(timeToPause);
+        //Now swap elements and change the list array
+        array[k] = left_array[i];
+        i++;
+      } else {
+        array[k] = right_array[j];
+        j++;
+      }
+      k++;
+    }
+    while (i < n1) {
+      array[k] = left_array[i];
+      i++;
+      k++;
+    }
+    while (j < n2) {
+      array[k] = right_array[j];
+      j++;
+      k++;
+    }
+  };
   render() {
     var widthOfBar = this.getWidthOfBars(
       this.state.NUMBER_OF_ARRAY_BARS,
@@ -273,6 +338,11 @@ class Visualizer extends Component {
                   onClick={() => this.insertionSort()}
                 >
                   Insertion-Sort
+                </a>
+              </li>
+              <li>
+                <a href="#" id="mergeSort" onClick={() => this.mergeSort()}>
+                  Merge-Sort
                 </a>
               </li>
             </div>
@@ -327,4 +397,7 @@ function disableAllButtons(
   document.getElementById(
     "stopButton"
   ).style.display = displayModeForStopButton;
+  document.getElementById(
+    "mergeSort"
+  ).style.display = displayModeForSortButtons;
 }
