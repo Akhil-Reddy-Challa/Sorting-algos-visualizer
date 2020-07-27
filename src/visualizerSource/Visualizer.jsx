@@ -192,7 +192,7 @@ class Visualizer extends Component {
   insertionSort = async () => {
     disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
     let array = this.state.list;
-    let temp = 0;
+    //let temp = 0;
     var timeToPause = this.getTimeToPause(array.length); //Based on number of array elements, get the time to pause
     let leng_of_array = array.length;
     var key, j;
@@ -224,62 +224,68 @@ class Visualizer extends Component {
     }
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
-  mergeSort = () => {
+  mergeSort = async (array, dummy) => {
     disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
-    let array = this.state.list;
-    console.log(array);
-    this.merge_sort_array_breaking(array, 0, array.length - 1);
-    this.setState({ array });
-    console.log(array);
+    //console.log("Orig arr: ", array);
+    if (array.length === 0) return;
+    if (array.length > 1) {
+      let mid = parseInt(array.length / 2);
+      //Split left part
+      let left_array = [];
+      let left_array_for_storing_index_for_display = [];
+      for (let i = 0; i < mid; i++) {
+        left_array.push(array[i]);
+        left_array_for_storing_index_for_display.push(i);
+      } //Split right part
+      let right_array = [];
+      let right_array_for_storing_index_for_display = [];
+      for (let i = mid; i < array.length; i++) {
+        right_array[i - mid] = array[i];
+        right_array_for_storing_index_for_display.push(i - mid);
+      }
+      this.mergeSort(left_array, left_array.length);
+      this.mergeSort(right_array, right_array.length);
+      //await this.sleep(array.length * 2500);
+      console.log(dummy);
+      console.log(
+        "**************************Sorting starts here ******************"
+      );
 
-    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
-  };
-  merge_sort_array_breaking = async (array, l, r) => {
-    if (l < r) {
-      // Find the middle point
-      let m = parseInt((l + r) / 2);
-      //console.log("l,m,r is: ", l, m, r);
-
-      // Sort first and second halves
-      this.merge_sort_array_breaking(array, l, m);
-      this.merge_sort_array_breaking(array, m + 1, r);
-
-      // Merge the sorted halves
-      this.merging_the_sorted_arrays(array, l, m, r);
-    }
-  };
-  merging_the_sorted_arrays = async (array, l, m, r) => {
-    let n1 = m - l + 1;
-    let n2 = r - m;
-    //console.log("start: ", l, " mid: ", m, " last: ", r);
-    //console.log("n1: ", n1, " n2: ", n2);
-    let left_array = [];
-    let right_array = [];
-    for (let i = 0; i < n1; ++i) left_array.push(array[l + i]);
-    for (let j = 0; j < n2; ++j) right_array.push(array[m + 1 + j]);
-    let i = 0,
-      j = 0;
-    let k = l;
-    while (i < n1 && j < n2) {
-      if (left_array[i] <= right_array[j]) {
+      console.log("Left-arr", left_array);
+      console.log("Left-index-arr", left_array_for_storing_index_for_display);
+      console.log("Right-arr", right_array);
+      console.log("Right-index-arr", right_array_for_storing_index_for_display);
+      console.log("mid", mid);
+      let i = 0;
+      let j = 0;
+      let k = 0;
+      // Merge left and right arrays
+      while (i < left_array.length && j < right_array.length) {
+        if (left_array[i] <= right_array[j]) {
+          array[k] = left_array[i];
+          i++;
+        } else {
+          array[k] = right_array[j];
+          j++;
+        }
+        k++;
+      }
+      // Collect remaining elements
+      while (i < left_array.length) {
         array[k] = left_array[i];
         i++;
-      } else {
+        k++;
+      }
+      while (j < right_array.length) {
         array[k] = right_array[j];
         j++;
+        k++;
       }
-      k++;
     }
-    while (i < n1) {
-      array[k] = left_array[i];
-      i++;
-      k++;
-    }
-    while (j < n2) {
-      array[k] = right_array[j];
-      j++;
-      k++;
-    }
+    this.setState({ array });
+    //console.log("Sorted arr: ", array);
+
+    disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
     var widthOfBar = this.getWidthOfBars(
@@ -333,7 +339,13 @@ class Visualizer extends Component {
                 </a>
               </li>
               <li>
-                <a href="#" id="mergeSort" onClick={() => this.mergeSort()}>
+                <a
+                  href="#"
+                  id="mergeSort"
+                  onClick={() =>
+                    this.mergeSort(this.state.list, this.state.list.length)
+                  }
+                >
                   Merge-Sort
                 </a>
               </li>
