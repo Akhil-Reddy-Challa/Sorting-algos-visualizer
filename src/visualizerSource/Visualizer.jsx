@@ -224,67 +224,57 @@ class Visualizer extends Component {
     }
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
-  mergeSort = async (array, dummy) => {
+  mergeSort = async () => {
     disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
-    //console.log("Orig arr: ", array);
-    if (array.length === 0) return;
-    if (array.length > 1) {
-      let mid = parseInt(array.length / 2);
-      //Split left part
-      let left_array = [];
-      let left_array_for_storing_index_for_display = [];
-      for (let i = 0; i < mid; i++) {
-        left_array.push(array[i]);
-        left_array_for_storing_index_for_display.push(i);
-      } //Split right part
-      let right_array = [];
-      let right_array_for_storing_index_for_display = [];
-      for (let i = mid; i < array.length; i++) {
-        right_array[i - mid] = array[i];
-        right_array_for_storing_index_for_display.push(i - mid);
-      }
-      this.mergeSort(left_array, left_array.length);
-      this.mergeSort(right_array, right_array.length);
-      //await this.sleep(array.length * 2500);
-      console.log(dummy);
-      console.log(
-        "**************************Sorting starts here ******************"
-      );
 
-      console.log("Left-arr", left_array);
-      console.log("Left-index-arr", left_array_for_storing_index_for_display);
-      console.log("Right-arr", right_array);
-      console.log("Right-index-arr", right_array_for_storing_index_for_display);
-      console.log("mid", mid);
-      let i = 0;
-      let j = 0;
-      let k = 0;
-      // Merge left and right arrays
-      while (i < left_array.length && j < right_array.length) {
-        if (left_array[i] <= right_array[j]) {
-          array[k] = left_array[i];
-          i++;
-        } else {
-          array[k] = right_array[j];
-          j++;
+    let i, j, k, size, l1, h1, l2, h2;
+
+    let array = this.state.list;
+    let n = array.length;
+    var timeToPause = this.getTimeToPause(n);
+    let temp = new Array(n).fill(0);
+    //console.log("Unsorted list:", array);
+
+    // /* l1 lower bound of first pair and so on */
+    for (size = 1; size < n; size = size * 2) {
+      l1 = 0;
+      k = 0; /* Index for temp array */
+      // System.out.println("l1 , k, size: " + l1 + " " + k + " " + size);
+      while (l1 + size < n) {
+        h1 = l1 + size - 1;
+        l2 = h1 + 1;
+        h2 = l2 + size - 1;
+        /* h2 exceeds the limlt of arr */
+        if (h2 >= n) h2 = n - 1;
+
+        /* Merge the two pairs with lower limits l1 and l2 */
+        i = l1;
+        j = l2;
+        // System.out.println("h1 , h2, l1, l2: " + h1 + " " + h2 + " " + l1 + " " +
+        // l2);
+        // System.out.println("i, j: " + i + " " + j);
+        while (i <= h1 && j <= h2) {
+          if (array[i] <= array[j]) temp[k++] = array[i++];
+          else temp[k++] = array[j++];
         }
-        k++;
-      }
-      // Collect remaining elements
-      while (i < left_array.length) {
-        array[k] = left_array[i];
-        i++;
-        k++;
-      }
-      while (j < right_array.length) {
-        array[k] = right_array[j];
-        j++;
-        k++;
-      }
-    }
-    this.setState({ array });
-    //console.log("Sorted arr: ", array);
 
+        while (i <= h1) temp[k++] = array[i++];
+        while (j <= h2) temp[k++] = array[j++];
+        /** Merging completed **/
+        /* Take the next two pairs for merging */
+        l1 = h2 + 1;
+        //console.log("Temp arr: ", temp);
+      } /* End of while */
+
+      /* any pair left */
+      for (i = l1; k < n; i++) temp[k++] = array[i];
+
+      for (i = 0; i < n; i++) array[i] = temp[i];
+      //console.log("Arr: ", array);
+      this.setState({ array });
+      await this.sleep(timeToPause);
+    }
+    //console.log("Final Arr: ", array);
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
