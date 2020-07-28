@@ -30,7 +30,14 @@ class Visualizer extends Component {
   };
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
-    const max = 255;
+    //Now based on our device_height we must set our max element
+    /*
+    1. This(window.innerHeight) gives us the height
+    2. Our nav bar occupies 116px & bottom scroll bar occupies 20px
+    3. hence we subtract them from device height
+    4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
+    */
+    const max = Math.floor((window.innerHeight - 136) / 3);
     const list = [];
     for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++)
       list.push(Math.trunc(min + Math.random() * (max - min)));
