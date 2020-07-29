@@ -1,25 +1,29 @@
 import React, { Component } from "react";
-const slider_min_value = 3;
+const slider_min_value = 5; //This sets a static min_value for slider
+/*
+Slider_max_value:
+This is responsible for calculating the max_value to slider
+1) It considers device_Width and subtrats 20px(Scrollbar size)
+2) It divides the above by 3, because smallest_bar occupies 3pixels(bar:1px, left_margin:2px)
+3) This is usefuly when react is opened in mobile-browsers
+*/
 const slider_max_value = Math.min(
-  400,
+  300,
   Math.floor((window.innerWidth - 20) / 3)
 );
-var number_of_bars_to_display = 3;
-var my_screen_width = Number(
-  Math.floor(
-    (window.innerWidth - 20 - number_of_bars_to_display * 2) /
-      number_of_bars_to_display
-  ).toPrecision(1)
-);
+var number_of_bars_to_display = 5; //This holds the count of bars to display
+var width_of_bars =
+  (window.innerWidth - 20 - number_of_bars_to_display * 2) /
+  number_of_bars_to_display;
 /*
-  For the above formula, look at method(getWidthOfbars) in version_4 or lesser
+  To understand the above formula, look at method(getWidthOfbars) in version_4 or lesser
   */
 class Visualizer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: [100, 90, 80],
+      list: [100, 90, 80, 70, 60],
       NUMBER_OF_ARRAY_BARS: number_of_bars_to_display,
     };
   }
@@ -56,12 +60,10 @@ class Visualizer extends Component {
     //Now update the array size
 
     number_of_bars_to_display = event.target.value;
-    let temp =
+    width_of_bars =
       (window.innerWidth - 20 - number_of_bars_to_display * 2) /
       number_of_bars_to_display;
-    console.log("no Sw: ", temp);
-    my_screen_width = Number(temp.toPrecision(2));
-    console.log("Sw: ", my_screen_width);
+
     this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
       this.generateNewValues();
     });
@@ -310,10 +312,7 @@ class Visualizer extends Component {
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
-    var widthOfBar = my_screen_width;
-    var displayNumberOnBar = this.getNumberOnBar(
-      this.state.NUMBER_OF_ARRAY_BARS
-    );
+    var displayNumberOnBar = this.getNumberOnBar(number_of_bars_to_display);
     return (
       <div>
         <header>
@@ -330,7 +329,7 @@ class Visualizer extends Component {
             type="range"
             id="slider"
             name="Slider"
-            defaultValue="3"
+            defaultValue="5"
             min={slider_min_value}
             max={slider_max_value}
             onChange={this.reSizeArray}
@@ -381,7 +380,7 @@ class Visualizer extends Component {
               className="normalBar"
               id={indexOfElement}
               key={indexOfElement}
-              style={{ height: number * 3, width: widthOfBar }}
+              style={{ height: number * 3, width: width_of_bars }}
             >
               <p className="makeTextBold" style={{ color: displayNumberOnBar }}>
                 {number}
