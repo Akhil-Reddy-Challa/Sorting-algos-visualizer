@@ -1,32 +1,31 @@
 import React, { Component } from "react";
-
+const slider_min_value = 3;
+const slider_max_value = Math.min(
+  400,
+  Math.floor((window.innerWidth - 20) / 3)
+);
+var number_of_bars_to_display = 3;
+var my_screen_width = Number(
+  Math.floor(
+    (window.innerWidth - 20 - number_of_bars_to_display * 2) /
+      number_of_bars_to_display
+  ).toPrecision(1)
+);
+/*
+  For the above formula, look at method(getWidthOfbars) in version_4 or lesser
+  */
 class Visualizer extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      list: [120, 110, 130, 50, 60, 70],
-      NUMBER_OF_ARRAY_BARS: 6,
+      list: [100, 90, 80],
+      NUMBER_OF_ARRAY_BARS: number_of_bars_to_display,
     };
   }
   getNumberOnBar = (bar_count) => {
     if (bar_count <= 65) return "aliceblue";
     else return "transparent";
-  };
-  getWidthOfBars = (bar_count, screen_width) => {
-    //Now we have screen_width to dyanmically adjust with various devices
-    //1) We have bar_width + margin(default: 2px) in CSS
-    var width;
-    //Now decrease screen_width by 20px (Because of the Scroll bar intervention)
-    screen_width -= 20;
-    //Now decrease the margin size from screen_width, because each bar consumes 2px has margin-right
-    //Decrease total screen_width by (margin * Number_of_bars)
-    screen_width = screen_width - bar_count * 2;
-
-    width = screen_width / bar_count; //Now this gives us the width for number_of_bars
-    //console.log(width);
-
-    return width;
   };
   generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
     const min = 1;
@@ -56,8 +55,13 @@ class Visualizer extends Component {
     //User selects a value
     //Now update the array size
 
-    //console.log("Value increased than current");
-
+    number_of_bars_to_display = event.target.value;
+    let temp =
+      (window.innerWidth - 20 - number_of_bars_to_display * 2) /
+      number_of_bars_to_display;
+    console.log("no Sw: ", temp);
+    my_screen_width = Number(temp.toPrecision(2));
+    console.log("Sw: ", my_screen_width);
     this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
       this.generateNewValues();
     });
@@ -254,14 +258,15 @@ class Visualizer extends Component {
         i = l1;
         j = l2;
         //i,j are the elements to be compared
-        //Change their color to blue
-        this.changeColorOnNodes("blue", i);
-        this.changeColorOnNodes("blue", j);
-        await this.sleep(timeToPause);
-        //Change color back to normal
-        this.changeColorOnNodes("normal", i);
-        this.changeColorOnNodes("normal", j);
+        //Change their color to blue in while loop
+
         while (i <= h1 && j <= h2) {
+          this.changeColorOnNodes("blue", i);
+          this.changeColorOnNodes("blue", j);
+          await this.sleep(timeToPause);
+          //Change color back to normal
+          this.changeColorOnNodes("normal", i);
+          this.changeColorOnNodes("normal", j);
           if (array[i] <= array[j]) temp[k++] = array[i++];
           else {
             //This is reached when two elements are unsorted, Ex: array[i]=3, array[j]=2
@@ -284,9 +289,9 @@ class Visualizer extends Component {
         }
         while (j <= h2) {
           //Just change the color from blue and back to normal
-          this.changeColorOnNodes("blue", i);
+          this.changeColorOnNodes("blue", j);
           await this.sleep(timeToPause);
-          this.changeColorOnNodes("normal", i);
+          this.changeColorOnNodes("normal", j);
           temp[k++] = array[j++];
         }
         /** Merging completed **/
@@ -300,17 +305,12 @@ class Visualizer extends Component {
       for (i = 0; i < n; i++) array[i] = temp[i];
 
       this.setState({ array });
-      await this.sleep(timeToPause);
     }
 
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
   render() {
-    var widthOfBar = this.getWidthOfBars(
-      this.state.NUMBER_OF_ARRAY_BARS,
-      window.innerWidth
-    );
-
+    var widthOfBar = my_screen_width;
     var displayNumberOnBar = this.getNumberOnBar(
       this.state.NUMBER_OF_ARRAY_BARS
     );
@@ -320,7 +320,7 @@ class Visualizer extends Component {
           <p>Visualizer</p>
           <a
             className="cta"
-            href="#"
+            href="/#"
             id="generateNewValuesButton"
             onClick={this.generateNewValues}
           >
@@ -331,25 +331,25 @@ class Visualizer extends Component {
             id="slider"
             name="Slider"
             defaultValue="3"
-            min="3"
-            max="400"
+            min={slider_min_value}
+            max={slider_max_value}
             onChange={this.reSizeArray}
           />
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" id="heapSort" onClick={() => this.heapSort()}>
+                <a href="/#" id="heapSort" onClick={() => this.heapSort()}>
                   Heap-Sort
                 </a>
               </li>
               <li>
-                <a href="#" id="bubbleSort" onClick={() => this.bubbleSort()}>
+                <a href="/#" id="bubbleSort" onClick={() => this.bubbleSort()}>
                   Bubble-Sort
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/#"
                   id="insertionSort"
                   onClick={() => this.insertionSort()}
                 >
@@ -357,13 +357,7 @@ class Visualizer extends Component {
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  id="mergeSort"
-                  onClick={() =>
-                    this.mergeSort(this.state.list, this.state.list.length)
-                  }
-                >
+                <a href="/#" id="mergeSort" onClick={() => this.mergeSort()}>
                   Merge-Sort
                 </a>
               </li>
@@ -372,7 +366,7 @@ class Visualizer extends Component {
           <a
             className="cta"
             id="stopButton"
-            href="#"
+            href="/#"
             style={{ display: "none" }}
             onClick={() => {
               window.location.reload(false);
