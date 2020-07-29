@@ -24,49 +24,47 @@ class Visualizer extends Component {
 
     this.state = {
       list: [100, 90, 80, 70, 60],
-      NUMBER_OF_ARRAY_BARS: number_of_bars_to_display,
     };
   }
   getNumberOnBar = (bar_count) => {
     if (bar_count <= 65) return "aliceblue";
     else return "transparent";
   };
-  generateValuesInArray = (NUMBER_OF_ARRAY_BARS) => {
-    const min = 1;
-    //Now based on our device_height we must set our max element
+  generateValuesInArray = () => {
+    const min_number = 1;
+    //Now based on our device_height we must set our max number
     /*
     1. This(window.innerHeight) gives us the height
     2. Our nav bar occupies 116px & bottom scroll bar occupies 20px
     3. hence we subtract them from device height
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
-    const max = Math.floor((window.innerHeight - 136) / 3);
+    const max_number = Math.floor((window.innerHeight - 136) / 3);
     const list = [];
-    for (let i = 0; i < NUMBER_OF_ARRAY_BARS; i++)
-      list.push(Math.trunc(min + Math.random() * (max - min)));
+    for (let i = 0; i < number_of_bars_to_display; i++)
+      list.push(
+        Math.trunc(min_number + Math.random() * (max_number - min_number))
+      );
     this.setState({ list });
   };
   generateNewValues = () => {
     //Now delete all elements in array, so that we can use above method(generateValuesInArray)
     //this.state.list.length = 0; //This will empty the array( Reference: https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript)
-    this.setState({ list: [] });
-    //console.log(this.state.NUMBER_OF_ARRAY_BARS);
-    //console.log("I am here now ");
-    this.generateValuesInArray(this.state.NUMBER_OF_ARRAY_BARS);
+    //console.log("list is:", this.state.list);
+
+    this.setState({ list: [] }); //This will make out list empty
+    this.generateValuesInArray();
   };
   reSizeArray = (event) => {
-    //console.log("User Selected: ", event.target.value);
     //User selects a value
     //Now update the array size
 
     number_of_bars_to_display = event.target.value;
     width_of_bars =
       (window.innerWidth - 20 - number_of_bars_to_display * 2) /
-      number_of_bars_to_display;
+      number_of_bars_to_display; //As the bars increase/decrease we should re-compute the bar width
 
-    this.setState({ NUMBER_OF_ARRAY_BARS: event.target.value }, () => {
-      this.generateNewValues();
-    });
+    this.generateNewValues();
   };
   getTimeToPause = (numberOfElements) => {
     if (numberOfElements < 20) return 80;
