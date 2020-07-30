@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-const slider_min_value = 5; //This sets a static min_value for slider
 /*
 Slider_max_value:
 This is responsible for calculating the max_value to slider
@@ -18,10 +17,10 @@ var width_of_bars =
 /*
   To understand the above formula, look at method(getWidthOfbars) in version_4 or lesser
   */
+let header_bar_height = 0; //Will be computed in method(componentDidMount)
 class Visualizer extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       list: [100, 90, 80, 70, 60],
     };
@@ -35,11 +34,13 @@ class Visualizer extends Component {
     //Now based on our device_height we must set our max number
     /*
     1. This(window.innerHeight) gives us the height
-    2. Our nav bar occupies 116px & bottom scroll bar occupies 20px
+    2. Our nav bar occupies header_bar_height pixels & bottom scroll bar occupies 20px.
+    >> header_bar_height = Calculates heght of header bar
     3. hence we subtract them from device height
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
-    const max_number = Math.floor((window.innerHeight - 136) / 3);
+
+    const max_number = Math.floor((window.innerHeight - header_bar_height) / 3);
     const list = [];
     for (let i = 0; i < number_of_bars_to_display; i++)
       list.push(
@@ -58,7 +59,6 @@ class Visualizer extends Component {
   reSizeArray = (event) => {
     //User selects a value
     //Now update the array size
-
     number_of_bars_to_display = event.target.value;
     width_of_bars =
       (window.innerWidth - 20 - number_of_bars_to_display * 2) /
@@ -237,6 +237,7 @@ class Visualizer extends Component {
   };
   mergeSort = async () => {
     disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
+    console.log("var: ", global.my_dummy_var);
     let i, j, k, size, l1, h1, l2, h2;
     let array = this.state.list;
     let n = array.length;
@@ -309,11 +310,21 @@ class Visualizer extends Component {
 
     disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
   };
+  componentDidMount() {
+    //This is invoked automatically after render()
+    /*
+    1) This gives us an opportunity to caluculate height allocated to <header> element
+    >>Because without render being executed, we cannot find height given to our header eleemnt
+    2) Store it as a constant(name )
+    */
+    header_bar_height = document.getElementById("header").offsetHeight;
+  }
+
   render() {
     var displayNumberOnBar = this.getNumberOnBar(number_of_bars_to_display);
     return (
       <div>
-        <header>
+        <header id="header">
           <p>Visualizer</p>
           <a
             className="cta"
@@ -328,7 +339,7 @@ class Visualizer extends Component {
             id="slider"
             name="Slider"
             defaultValue="5"
-            min={slider_min_value}
+            min="5"
             max={slider_max_value}
             onChange={this.reSizeArray}
           />
