@@ -40,7 +40,9 @@ class Visualizer extends Component {
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
 
-    const max_number = Math.floor((window.innerHeight - header_bar_height) / 3);
+    const max_number = Math.floor(
+      (window.innerHeight - header_bar_height - 10) / 3
+    );
     const list = [];
     for (let i = 0; i < number_of_bars_to_display; i++)
       list.push(
