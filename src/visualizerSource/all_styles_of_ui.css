@@ -3,9 +3,6 @@
   margin: 0;
   padding: 0;
 }
-body {
-  /* background-color: #859398; */
-}
 header {
   display: flex;
   justify-content: space-around;
@@ -94,7 +91,6 @@ p {
   display: block;
   transition: color 0.3s ease 0s;
 }
-
 .overlay a:hover,
 .overlay a:focus {
   color: #0088a9;
