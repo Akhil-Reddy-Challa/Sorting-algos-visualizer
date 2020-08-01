@@ -22,7 +22,7 @@ class Visualizer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: [1, 90, 80, 70, 60],
+      list: [100, 90, 80, 70, 60],
     };
   }
   getNumberOnBar = () => {
