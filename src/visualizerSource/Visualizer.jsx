@@ -22,12 +22,11 @@ class Visualizer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: [100, 90, 80, 70, 60],
+      list: [1, 90, 80, 70, 60],
     };
   }
-  getNumberOnBar = (bar_count) => {
-    if (bar_count <= 65) return "aliceblue";
-    else return "transparent";
+  getNumberOnBar = () => {
+    return width_of_bars > 30 ? "aliceblue" : "transparent";
   };
   generateValuesInArray = () => {
     const min_number = 1;
@@ -342,13 +341,12 @@ class Visualizer extends Component {
       "mergeSort"
     ).style.display = displayModeForSortButtons;
   }
-
   render() {
-    var displayNumberOnBar = this.getNumberOnBar(number_of_bars_to_display);
+    const displayNumberonBar = this.getNumberOnBar();
     return (
       <div>
         <header id="header">
-          <p>Visualizer</p>
+          <p className="title">Visualizer</p>
           <a
             className="cta"
             href="#"
@@ -414,7 +412,7 @@ class Visualizer extends Component {
               key={indexOfElement}
               style={{ height: number * 3, width: width_of_bars }}
             >
-              <p className="makeTextBold" style={{ color: displayNumberOnBar }}>
+              <p className="numberOnBar" style={{ color: displayNumberonBar }}>
                 {number}
               </p>
             </div>

@@ -10,11 +10,16 @@ header {
   padding: 30px 10%;
   background-color: #24252a;
 }
-p {
+.title {
   font-family: "Montserrat", sans-serif;
   font-weight: 500;
   color: aliceblue;
   font-size: large;
+}
+.numberOnBar {
+  font-family: "Montserrat", sans-serif;
+  color: aliceblue;
+  font-weight: bold;
 }
 .nav__links a,
 .cta,
@@ -122,9 +127,4 @@ p {
   margin-left: 2px;
   background-color: #38ef7d;
   text-align: center;
-}
-
-.makeTextBold {
-  font-weight: bolder;
-  font-size: 15px;
 }
