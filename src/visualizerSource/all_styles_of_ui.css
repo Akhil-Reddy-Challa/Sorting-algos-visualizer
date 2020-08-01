@@ -4,7 +4,7 @@
   padding: 0;
 }
 body {
-  background-color: grey;
+  /* background-color: #859398; */
 }
 header {
   display: flex;
@@ -47,7 +47,7 @@ p {
 
 .cta {
   padding: 9px 25px;
-  background-color: rgba(0, 136, 169, 1);
+  background-color: #0082c8;
   border: none;
   border-radius: 50px;
   cursor: pointer;
@@ -55,7 +55,7 @@ p {
 }
 
 .cta:hover {
-  background-color: rgba(0, 136, 169, 0.8);
+  background-color: #0082c8;
 }
 
 /* Mobile Nav */
@@ -110,21 +110,21 @@ p {
   width: 3px;
   display: inline-block;
   margin-left: 2px;
-  background-color: #1affff;
+  background-color: #00c6ff;
   text-align: center;
 }
 .redBar {
   width: 3px;
   display: inline-block;
   margin-left: 2px;
-  background-color: red;
+  background-color: #eb3349;
   text-align: center;
 }
-.blueBar {
+.greenBar {
   width: 3px;
   display: inline-block;
   margin-left: 2px;
-  background-color: #1c1cf0;
+  background-color: #38ef7d;
   text-align: center;
 }
 

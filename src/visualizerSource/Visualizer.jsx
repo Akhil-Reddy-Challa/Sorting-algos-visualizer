@@ -95,8 +95,8 @@ class Visualizer extends Component {
     for (let i = 0; i < leng_of_array - 1; i++) {
       for (let j = 0; j < leng_of_array - 1; j++) {
         //Now highlight two nodes that we are comparing
-        this.changeColorOnNodes("blue", j);
-        this.changeColorOnNodes("blue", j + 1);
+        this.changeColorOnNodes("green", j);
+        this.changeColorOnNodes("green", j + 1);
         await this.sleep(timeToPause);
         if (array[j] > array[j + 1]) {
           //Change color to red because they are unsorted
@@ -127,8 +127,8 @@ class Visualizer extends Component {
       // if child is bigger than parent
       var parentIndex = Math.floor((i - 1) / 2);
       //Now highlight the  nodes that we are comparing
-      this.changeColorOnNodes("blue", i);
-      this.changeColorOnNodes("blue", parentIndex);
+      this.changeColorOnNodes("green", i);
+      this.changeColorOnNodes("green", parentIndex);
       await this.sleep(timeToPause);
       if (array[i] > array[parentIndex]) {
         var j = i;
@@ -148,7 +148,7 @@ class Visualizer extends Component {
           j = Math.floor((j - 1) / 2);
         }
       }
-      //If if is not executed, the color would be blue so change to normal
+      //If if is not executed, the color would be green so change to normal
       this.changeColorOnNodes("normal", i);
       this.changeColorOnNodes("normal", parentIndex);
     }
@@ -166,8 +166,8 @@ class Visualizer extends Component {
       do {
         leftChild = 2 * j + 1;
         rightChild = leftChild + 1; //Just for display
-        this.changeColorOnNodes("blue", j, leftChild);
-        this.changeColorOnNodes("blue", rightChild, leftChild);
+        this.changeColorOnNodes("green", j, leftChild);
+        this.changeColorOnNodes("green", rightChild, leftChild);
         await this.sleep(timeToPause);
         // if left child is smaller than
         // right child point leftChild variable
@@ -178,7 +178,7 @@ class Visualizer extends Component {
         //This condition is for only changing colors, not a sorting logic
         if (leftChild !== 2 * j + 1) {
           this.changeColorOnNodes("normal", 2 * j + 1, 2 * j + 1);
-          this.changeColorOnNodes("blue", leftChild, leftChild);
+          this.changeColorOnNodes("green", leftChild, leftChild);
         }
         // if parent is smaller than child
         // then swapping parent with child
@@ -213,8 +213,8 @@ class Visualizer extends Component {
       key = array[i];
       j = i - 1;
       //Now highlight the above two elements for comparision
-      this.changeColorOnNodes("blue", i);
-      this.changeColorOnNodes("blue", j);
+      this.changeColorOnNodes("green", i);
+      this.changeColorOnNodes("green", j);
       await this.sleep(timeToPause);
       while (j >= 0 && array[j] > key) {
         //Now we found highest element in left side, so swap
@@ -231,7 +231,7 @@ class Visualizer extends Component {
       }
       array[j + 1] = key;
       this.changeColorOnNodes("normal", i);
-      //If the array is already sorted, the initial blue color stays, so to avoid that
+      //If the array is already sorted, the initial green color stays, so to avoid that
       this.changeColorOnNodes("normal", j);
       this.setState({ array });
     }
@@ -261,11 +261,11 @@ class Visualizer extends Component {
         i = l1;
         j = l2;
         //i,j are the elements to be compared
-        //Change their color to blue in while loop
+        //Change their color to green in while loop
 
         while (i <= h1 && j <= h2) {
-          this.changeColorOnNodes("blue", i);
-          this.changeColorOnNodes("blue", j);
+          this.changeColorOnNodes("green", i);
+          this.changeColorOnNodes("green", j);
           await this.sleep(timeToPause);
           //Change color back to normal
           this.changeColorOnNodes("normal", i);
@@ -284,15 +284,15 @@ class Visualizer extends Component {
         }
         //If below executes,it means there are some un-traversed elements
         while (i <= h1) {
-          //Just change the color from blue and back to normal
-          this.changeColorOnNodes("blue", i);
+          //Just change the color from green and back to normal
+          this.changeColorOnNodes("green", i);
           await this.sleep(timeToPause);
           this.changeColorOnNodes("normal", i);
           temp[k++] = array[i++];
         }
         while (j <= h2) {
-          //Just change the color from blue and back to normal
-          this.changeColorOnNodes("blue", j);
+          //Just change the color from green and back to normal
+          this.changeColorOnNodes("green", j);
           await this.sleep(timeToPause);
           this.changeColorOnNodes("normal", j);
           temp[k++] = array[j++];
