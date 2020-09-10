@@ -3,8 +3,7 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import Visualizer from "./visualizerSource/Visualizer";
-import "./visualizerSource/all_styles_of_ui.css";
-
+import "./visualizerSource/CSS_Files/all_styles_of_ui.css";
 ReactDOM.render(
   <React.Fragment>
     <Visualizer />
