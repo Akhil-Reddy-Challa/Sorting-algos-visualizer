@@ -1,23 +1,6 @@
 import React, { Component } from "react";
-/*
-Slider_max_value:
-This is responsible for calculating the max_value to slider
-1) It considers device_Width and subtrats 20px(Scrollbar size)
-2) It divides the above by 3, because smallest_bar occupies 3pixels(bar:1px, left_margin:2px)
-3) This is usefuly when react is opened in mobile-browsers
-*/
-const slider_max_value = Math.min(
-  300,
-  Math.floor((window.innerWidth - 20) / 3)
-);
-var number_of_bars_to_display = 5; //This holds the count of bars to display
-var width_of_bars =
-  (window.innerWidth - 20 - number_of_bars_to_display * 2) /
-  number_of_bars_to_display;
-/*
-  To understand the above formula, look at method(getWidthOfbars) in version_4 or lesser
-  */
-let header_bar_height = 0; //Will be computed in method(componentDidMount)
+import AlgorithmCaller from "./Algorithms/CallAlgorithm";
+import CalculateValues from "./Algorithms/CalculateValues";
 class Visualizer extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +12,7 @@ class Visualizer extends Component {
     return width_of_bars > 30 ? "aliceblue" : "transparent";
   };
   generateValuesInArray = () => {
-    const min_number = 1;
+    const min_number = 5;
     //Now based on our device_height we must set our max number
     /*
     1. This(window.innerHeight) gives us the height
@@ -68,183 +51,38 @@ class Visualizer extends Component {
     this.generateNewValues();
   };
   getTimeToPause = (numberOfElements) => {
-    if (numberOfElements < 20) return 80;
-    // almost 1 sec
-    else if (numberOfElements < 40) return 40;
-    // greater than 1/2 Second
-    else if (numberOfElements < 100) return 20;
-    // less than 1/2 seconds
-    else if (numberOfElements < 200) return 8;
-    // 90 milliseconds
-    else return 0.5;
+    if (numberOfElements < 20) return 100;
+    else if (numberOfElements < 40) return 60;
+    else if (numberOfElements < 100) return 50;
+    else if (numberOfElements < 200) return 14;
+    else return 2;
   };
-  changeColorOnNodes = (color, elementID) => {
-    if (document.getElementById(elementID) != null)
-      document.getElementById(elementID).setAttribute("class", color + "Bar");
-  };
-  sleep = (milliseconds) => {
-    return new Promise((resolve) => setTimeout(resolve, milliseconds));
-  };
-  bubbleSort = async () => {
-    this.disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for display style of stop button
-    let array = this.state.list;
-    let temp = 0;
-    var timeToPause = this.getTimeToPause(array.length);
-    let leng_of_array = array.length;
-    for (let i = 0; i < leng_of_array - 1; i++) {
-      for (let j = 0; j < leng_of_array - 1; j++) {
-        //Now highlight two nodes that we are comparing
-        this.changeColorOnNodes("green", j);
-        this.changeColorOnNodes("green", j + 1);
-        await this.sleep(timeToPause);
-        if (array[j] > array[j + 1]) {
-          //Change color to red because they are unsorted
-          this.changeColorOnNodes("red", j);
-          this.changeColorOnNodes("red", j + 1);
-          //Freeze for 1 sec
-          await this.sleep(timeToPause);
-          //Now swap elements and change the list array
-          temp = array[j];
-          array[j] = array[j + 1];
-          array[j + 1] = temp;
-          this.setState({ array });
-        }
-        //Now change color back to normal
-        this.changeColorOnNodes("normal", j);
-        this.changeColorOnNodes("normal", j + 1);
-      }
-    }
-    this.disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
-  };
-  heapSort = async () => {
-    this.disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
-    let array = this.state.list;
-    var timeToPause = this.getTimeToPause(array.length);
-    var arr_len = array.length; //Get array length
-    //console.log("Unsorted array is: ", array);
-    for (var i = 1; i < arr_len; i++) {
-      // if child is bigger than parent
-      var parentIndex = Math.floor((i - 1) / 2);
-      //Now highlight the  nodes that we are comparing
-      this.changeColorOnNodes("green", i);
-      this.changeColorOnNodes("green", parentIndex);
-      await this.sleep(timeToPause);
-      if (array[i] > array[parentIndex]) {
-        var j = i;
-
-        // swap child and parent until
-        // parent is smaller
-        while (array[j] > array[Math.floor((j - 1) / 2)]) {
-          //Now chagne color to red
-          this.changeColorOnNodes("red", j);
-          this.changeColorOnNodes("red", Math.floor((j - 1) / 2));
-          await this.sleep(timeToPause);
-          this.swap(array, j, Math.floor((j - 1) / 2));
-          this.setState({ array });
-          //Now chage color back to normal
-          this.changeColorOnNodes("normal", j);
-          this.changeColorOnNodes("normal", Math.floor((j - 1) / 2));
-          j = Math.floor((j - 1) / 2);
-        }
-      }
-      //If if is not executed, the color would be green so change to normal
-      this.changeColorOnNodes("normal", i);
-      this.changeColorOnNodes("normal", parentIndex);
-    }
-
-    for (i = arr_len - 1; i > 0; i--) {
-      // swap value of first index
-      // with last index
-      this.swap(array, 0, i);
-      this.setState({ array });
-      // maintaining heap property
-      // after each swapping
-      j = 0;
-      var leftChild, rightChild;
-
-      do {
-        leftChild = 2 * j + 1;
-        rightChild = leftChild + 1; //Just for display
-        this.changeColorOnNodes("green", j, leftChild);
-        this.changeColorOnNodes("green", rightChild, leftChild);
-        await this.sleep(timeToPause);
-        // if left child is smaller than
-        // right child point leftChild variable
-        // to right child
-        if (leftChild < i - 1 && array[leftChild] < array[leftChild + 1]) {
-          leftChild++;
-        }
-        //This condition is for only changing colors, not a sorting logic
-        if (leftChild !== 2 * j + 1) {
-          this.changeColorOnNodes("normal", 2 * j + 1, 2 * j + 1);
-          this.changeColorOnNodes("green", leftChild, leftChild);
-        }
-        // if parent is smaller than child
-        // then swapping parent with child
-        // having higher value
-        if (leftChild < i && array[j] < array[leftChild]) {
-          //Discrepancy, now change color to res
-          this.changeColorOnNodes("red", j, leftChild);
-          await this.sleep(timeToPause);
-          this.swap(array, j, leftChild);
-          this.setState({ array });
-        }
-        this.changeColorOnNodes("normal", j, leftChild);
-        this.changeColorOnNodes("normal", rightChild, leftChild);
-        j = leftChild;
-      } while (leftChild < i);
-    }
-    this.disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
-  };
-  swap = (array, i, j) => {
-    var temp = array[i];
-    array[i] = array[j];
-    array[j] = temp;
-  };
-  insertionSort = async () => {
-    this.disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
-    let array = this.state.list;
-    //let temp = 0;
-    var timeToPause = this.getTimeToPause(array.length); //Based on number of array elements, get the time to pause
-    let leng_of_array = array.length;
-    var key, j;
-    for (var i = 1; i < leng_of_array; i++) {
-      key = array[i];
-      j = i - 1;
-      //Now highlight the above two elements for comparision
-      this.changeColorOnNodes("green", i);
-      this.changeColorOnNodes("green", j);
-      await this.sleep(timeToPause);
-      while (j >= 0 && array[j] > key) {
-        //Now we found highest element in left side, so swap
-        //Change colors to red
-        this.changeColorOnNodes("red", j);
-        this.changeColorOnNodes("red", j + 1);
-        await this.sleep(timeToPause);
-        array[j + 1] = array[j];
-        j -= 1;
-        //Change colors back to normal
-        this.changeColorOnNodes("normal", j + 1);
-        this.changeColorOnNodes("normal", j + 2);
-        this.setState({ array });
-      }
-      array[j + 1] = key;
-      this.changeColorOnNodes("normal", i);
-      //If the array is already sorted, the initial green color stays, so to avoid that
-      this.changeColorOnNodes("normal", j);
-      this.setState({ array });
-    }
-    this.disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
+  Algorithm = (algorithm_name) => {
+    this.disableAllTheButtons(); //Removes all the buttons on the screen
+    /*
+     *parameter = algorithm tells us the algorithm to call
+     0 === Bubble Sort
+     1 === Insertion Sort
+     2 === Heap Sort
+     3 === Selection Sort
+     We don't call Merge Sort, as it is async implementaion
+     */
+    //Now call the func, it returns an array with all the animations
+    let all_the_animations = AlgorithmCaller(
+      algorithm_name,
+      this.state.list.slice()
+    );
+    //Now call the func(paintTheNodes) to start animating
+    this.paintTheNodes(all_the_animations, this.state.list.slice());
   };
   mergeSort = async () => {
-    this.disableAllButtons("none", "flex"); //This will disable all the Sort buttons on the screen, will re-enable after sorting,,,,2nd Parameter is for stop button
-    console.log("var: ", global.my_dummy_var);
-    let i, j, k, size, l1, h1, l2, h2;
+    this.disableAllTheButtons();
     let array = this.state.list;
+    let i, j, k, size, l1, h1, l2, h2;
     let n = array.length;
-    var timeToPause = this.getTimeToPause(n);
+    let timeToPause = this.getTimeToPause(n);
     let temp = new Array(n).fill(0);
-    // /* l1 lower bound of first pair and so on */
+    /* l1 lower bound of first pair and so on */
     for (size = 1; size < n; size = size * 2) {
       l1 = 0;
       k = 0; /* Index for temp array */
@@ -263,37 +101,23 @@ class Visualizer extends Component {
         //Change their color to green in while loop
 
         while (i <= h1 && j <= h2) {
-          this.changeColorOnNodes("green", i);
-          this.changeColorOnNodes("green", j);
-          await this.sleep(timeToPause);
-          //Change color back to normal
-          this.changeColorOnNodes("normal", i);
-          this.changeColorOnNodes("normal", j);
           if (array[i] <= array[j]) temp[k++] = array[i++];
           else {
-            //This is reached when two elements are unsorted, Ex: array[i]=3, array[j]=2
+            //This is reached when two elements are unsorted, Ex: array[i]=3, array[i+x]=2
             //Highlight them as RedColor
-            this.changeColorOnNodes("red", i);
-            this.changeColorOnNodes("red", j);
+            this.changeTheColorOfNodes(i, j, "red");
             await this.sleep(timeToPause);
-            this.changeColorOnNodes("normal", i);
-            this.changeColorOnNodes("normal", j);
+            this.changeTheColorOfNodes(i, j, "normal");
             temp[k++] = array[j++];
           }
         }
         //If below executes,it means there are some un-traversed elements
         while (i <= h1) {
           //Just change the color from green and back to normal
-          this.changeColorOnNodes("green", i);
-          await this.sleep(timeToPause);
-          this.changeColorOnNodes("normal", i);
           temp[k++] = array[i++];
         }
         while (j <= h2) {
           //Just change the color from green and back to normal
-          this.changeColorOnNodes("green", j);
-          await this.sleep(timeToPause);
-          this.changeColorOnNodes("normal", j);
           temp[k++] = array[j++];
         }
         /** Merging completed **/
@@ -308,39 +132,87 @@ class Visualizer extends Component {
 
       this.setState({ array });
     }
-
-    this.disableAllButtons("flex", "none"); //This will re-enable all the Sort buttons on the screen.
+    this.enableAllTheButtons();
   };
-  componentDidMount() {
-    //This is invoked automatically after render()
+  sleep = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
+  paintTheNodes = (all_the_animations, array) => {
+    /**
+     * Responsible for animating the arrays_bars
+     * all_the_animations == Contains all the changes recorded during our sorting-algorithms
+     */
+    var timer = 1;
+    var timeToPause = this.getTimeToPause(array.length);
+    //Now color the nodes
+    for (let node of all_the_animations) {
+      let i1 = node[0];
+      let i2 = node[1];
+      setTimeout(
+        () => this.changeTheColorOfNodes(i1, i2, "green"),
+        timeToPause * timer++
+      );
+      setTimeout(
+        () => this.changeTheColorOfNodes(i1, i2, "red"),
+        timeToPause * timer++
+      );
+      setTimeout(() => this.swapElements(i1, i2, array), timeToPause * timer++);
+      setTimeout(
+        () => this.changeTheColorOfNodes(i1, i2, "normal"),
+        timeToPause * timer++
+      );
+    }
+    //Finally, we have to sort the array(list) in the React state
+    //We use setTimeout because, we want the array to be updated after the animation is done
+    setTimeout(() => this.setState({ list: array }), timeToPause * timer++);
+    //During algo start, we disable all the buttons, now we have to re-enable them
+    setTimeout(() => this.enableAllTheButtons(), timeToPause * timer);
+  };
+  changeTheColorOfNodes = (node1, node2, color) => {
+    document.getElementById(node1).setAttribute("class", color + "Bar");
+    document.getElementById(node2).setAttribute("class", color + "Bar");
+  };
+  swapElements = (index1, index2, array) => {
     /*
-    1) This gives us an opportunity to caluculate height allocated to <header> element
-    >>Because without render being executed, we cannot find height given to our header eleemnt
-    2) Store it as a constant(name )
+    We call this method if we want to swap high_value,low_value
+    Ex: swap(5,2)
+    1) First find the index1 and increase it height by index2*3 times
+    2) Now change the number that we display on the bar
+    3) Repeat the above 2 steps for index2
+    4) Finally swap the elements and store in the array
     */
-    header_bar_height = document.getElementById("header").offsetHeight;
-  }
-  disableAllButtons(displayModeForSortButtons, displayModeForStopButton) {
-    document.getElementById(
-      "bubbleSort"
-    ).style.display = displayModeForSortButtons;
-    document.getElementById(
-      "heapSort"
-    ).style.display = displayModeForSortButtons;
-    document.getElementById(
-      "insertionSort"
-    ).style.display = displayModeForSortButtons;
-    document.getElementById("slider").style.display = displayModeForSortButtons;
-    document.getElementById(
-      "generateNewValuesButton"
-    ).style.display = displayModeForSortButtons;
-    document.getElementById(
-      "stopButton"
-    ).style.display = displayModeForStopButton;
-    document.getElementById(
-      "mergeSort"
-    ).style.display = displayModeForSortButtons;
-  }
+    document.getElementById(index1).style.height = array[index2] * 3 + "px";
+    document.getElementById(index1).children[0].innerHTML = array[index2];
+    document.getElementById(index2).style.height = array[index1] * 3 + "px";
+    document.getElementById(index2).children[0].innerHTML = array[index1];
+    //Swap
+    let temp = array[index1];
+    array[index1] = array[index2];
+    array[index2] = temp;
+  };
+  disableAllTheButtons = () => {
+    //Disables all the buttons,slider
+    document.getElementById("bubbleSort").style.display = "none";
+    document.getElementById("heapSort").style.display = "none";
+    document.getElementById("insertionSort").style.display = "none";
+    document.getElementById("slider").style.display = "none";
+    document.getElementById("generateNewValuesButton").style.display = "none";
+    document.getElementById("mergeSort").style.display = "none";
+    //Now enable the Stop Button
+    document.getElementById("stopButton").style.display = "flex";
+  };
+  enableAllTheButtons = () => {
+    //Contrast to disableAllbtns method
+    //enables all the buttons,slider
+    document.getElementById("bubbleSort").style.display = "flex";
+    document.getElementById("heapSort").style.display = "flex";
+    document.getElementById("insertionSort").style.display = "flex";
+    document.getElementById("slider").style.display = "flex";
+    document.getElementById("generateNewValuesButton").style.display = "flex";
+    document.getElementById("mergeSort").style.display = "flex";
+    //Now disable the Stop Button
+    document.getElementById("stopButton").style.display = "none";
+  };
   render() {
     const displayNumberonBar = this.getNumberOnBar();
     return (
@@ -349,7 +221,7 @@ class Visualizer extends Component {
           <p className="title">Visualizer</p>
           <a
             className="cta"
-            href="#"
+            href="/#"
             id="generateNewValuesButton"
             onClick={this.generateNewValues}
           >
@@ -367,26 +239,40 @@ class Visualizer extends Component {
           <nav>
             <div className="nav__links">
               <li>
-                <a href="#" id="heapSort" onClick={() => this.heapSort()}>
-                  Heap-Sort
-                </a>
-              </li>
-              <li>
-                <a href="#" id="bubbleSort" onClick={() => this.bubbleSort()}>
+                <a href="/#" id="heapSort" onClick={() => this.Algorithm(0)}>
                   Bubble-Sort
                 </a>
               </li>
               <li>
-                <a
-                  href="#"
-                  id="insertionSort"
-                  onClick={() => this.insertionSort()}
-                >
+                <a href="/#" id="bubbleSort" onClick={() => this.Algorithm(1)}>
                   Insertion-Sort
                 </a>
               </li>
               <li>
-                <a href="#" id="mergeSort" onClick={() => this.mergeSort()}>
+                <a
+                  href="/#"
+                  id="insertionSort"
+                  onClick={() => this.Algorithm(2)}
+                >
+                  Heap-Sort
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/#"
+                  id="selectionSort"
+                  onClick={() => this.Algorithm(3)}
+                >
+                  Selection-Sort
+                </a>
+              </li>
+              <li>
+                <a href="/#" id="mergeSort" onClick={() => this.Algorithm(4)}>
+                  Quick-Sort
+                </a>
+              </li>
+              <li>
+                <a href="/#" id="mergeSort" onClick={() => this.mergeSort()}>
                   Merge-Sort
                 </a>
               </li>
@@ -395,7 +281,7 @@ class Visualizer extends Component {
           <a
             className="cta"
             id="stopButton"
-            href="#"
+            href="/#"
             style={{ display: "none" }}
             onClick={() => {
               window.location.reload(false);
@@ -421,6 +307,20 @@ class Visualizer extends Component {
       </div>
     );
   }
+  componentDidMount() {
+    //This is invoked automatically after render()
+    /*
+    1) This gives us an opportunity to caluculate height allocated to <header> element
+    >>Because without render being executed, we cannot find height given to our header element
+    2) Store it as a constant(name )
+    */
+    header_bar_height = document.getElementById("header").offsetHeight;
+  }
 }
-
+let {
+  slider_max_value,
+  number_of_bars_to_display,
+  width_of_bars,
+  header_bar_height,
+} = CalculateValues();
 export default Visualizer;
