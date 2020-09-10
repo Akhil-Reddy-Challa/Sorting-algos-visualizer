@@ -76,6 +76,7 @@ class Visualizer extends Component {
     this.paintTheNodes(all_the_animations, this.state.list.slice());
   };
   mergeSort = async () => {
+    //Merge sort is  async implementation, hence I was unable to push it to Algorithms folder
     this.disableAllTheButtons();
     let array = this.state.list;
     let i, j, k, size, l1, h1, l2, h2;
@@ -195,9 +196,13 @@ class Visualizer extends Component {
     document.getElementById("bubbleSort").style.display = "none";
     document.getElementById("heapSort").style.display = "none";
     document.getElementById("insertionSort").style.display = "none";
-    document.getElementById("slider").style.display = "none";
-    document.getElementById("generateNewValuesButton").style.display = "none";
     document.getElementById("mergeSort").style.display = "none";
+    document.getElementById("selectionSort").style.display = "none";
+    document.getElementById("quickSort").style.display = "none";
+
+    document.getElementById("slider").style.display = "none";
+    document.getElementById("generateNewValuesButton").style.visibility =
+      "hidden";
     //Now enable the Stop Button
     document.getElementById("stopButton").style.display = "flex";
   };
@@ -207,9 +212,13 @@ class Visualizer extends Component {
     document.getElementById("bubbleSort").style.display = "flex";
     document.getElementById("heapSort").style.display = "flex";
     document.getElementById("insertionSort").style.display = "flex";
-    document.getElementById("slider").style.display = "flex";
-    document.getElementById("generateNewValuesButton").style.display = "flex";
     document.getElementById("mergeSort").style.display = "flex";
+    document.getElementById("selectionSort").style.display = "flex";
+    document.getElementById("quickSort").style.display = "flex";
+
+    document.getElementById("slider").style.display = "flex";
+    document.getElementById("generateNewValuesButton").style.visibility =
+      "visible";
     //Now disable the Stop Button
     document.getElementById("stopButton").style.display = "none";
   };
@@ -239,21 +248,21 @@ class Visualizer extends Component {
           <nav>
             <div className="nav__links">
               <li>
-                <a href="/#" id="heapSort" onClick={() => this.Algorithm(0)}>
+                <a href="/#" id="bubbleSort" onClick={() => this.Algorithm(0)}>
                   Bubble-Sort
-                </a>
-              </li>
-              <li>
-                <a href="/#" id="bubbleSort" onClick={() => this.Algorithm(1)}>
-                  Insertion-Sort
                 </a>
               </li>
               <li>
                 <a
                   href="/#"
                   id="insertionSort"
-                  onClick={() => this.Algorithm(2)}
+                  onClick={() => this.Algorithm(1)}
                 >
+                  Insertion-Sort
+                </a>
+              </li>
+              <li>
+                <a href="/#" id="heapSort" onClick={() => this.Algorithm(2)}>
                   Heap-Sort
                 </a>
               </li>
@@ -267,7 +276,7 @@ class Visualizer extends Component {
                 </a>
               </li>
               <li>
-                <a href="/#" id="mergeSort" onClick={() => this.Algorithm(4)}>
+                <a href="/#" id="quickSort" onClick={() => this.Algorithm(4)}>
                   Quick-Sort
                 </a>
               </li>
