@@ -15,16 +15,14 @@ class Visualizer extends Component {
     const min_number = 5;
     //Now based on our device_height we must set our max number
     /*
-    1. This(window.innerHeight) gives us the height
-    2. Our nav bar occupies header_bar_height pixels & bottom scroll bar occupies 10px.
+    1. This(window.innerHeight) gives us the screen_height
+    2. Our nav bar occupies (header_bar_height) pixels
     >> header_bar_height = Calculates the height of header bar
     3. Hence we subtract them from device height
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
 
-    const max_number = Math.floor(
-      (window.innerHeight - header_bar_height - 10) / 3
-    );
+    const max_number = Math.floor((window.innerHeight - header_bar_height) / 3);
     const list = [];
     for (let i = 0; i < number_of_bars_to_display; i++)
       list.push(
@@ -44,9 +42,10 @@ class Visualizer extends Component {
     //User selects a value
     //Now update the array size
     number_of_bars_to_display = event.target.value;
+    //As the bars increase/decrease we should re-compute the bar width
     width_of_bars =
-      (window.innerWidth - 20 - number_of_bars_to_display * 2) /
-      number_of_bars_to_display; //As the bars increase/decrease we should re-compute the bar width
+      (window.innerWidth - 1 - number_of_bars_to_display * 2) /
+      number_of_bars_to_display;
 
     this.generateNewValues();
   };
