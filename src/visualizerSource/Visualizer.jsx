@@ -16,9 +16,9 @@ class Visualizer extends Component {
     //Now based on our device_height we must set our max number
     /*
     1. This(window.innerHeight) gives us the height
-    2. Our nav bar occupies header_bar_height pixels & bottom scroll bar occupies 20px.
-    >> header_bar_height = Calculates heght of header bar
-    3. hence we subtract them from device height
+    2. Our nav bar occupies header_bar_height pixels & bottom scroll bar occupies 10px.
+    >> header_bar_height = Calculates the height of header bar
+    3. Hence we subtract them from device height
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
 
