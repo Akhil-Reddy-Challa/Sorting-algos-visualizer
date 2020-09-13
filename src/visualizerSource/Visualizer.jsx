@@ -197,15 +197,15 @@ class Visualizer extends Component {
     array[index2] = temp;
   };
   disableAllTheButtons = () => {
-    //Disables all the buttons,slider
+    //Disables all the buttons,slider,slider-text
     document.getElementById("bubbleSort").style.display = "none";
     document.getElementById("heapSort").style.display = "none";
     document.getElementById("insertionSort").style.display = "none";
     document.getElementById("mergeSort").style.display = "none";
     document.getElementById("selectionSort").style.display = "none";
     document.getElementById("quickSort").style.display = "none";
-
     document.getElementById("slider").style.display = "none";
+    document.getElementById("inputSliderText").style.display = "none";
     document.getElementById("generateNewValuesButton").style.visibility =
       "hidden";
     //Now enable the Stop Button
@@ -220,8 +220,8 @@ class Visualizer extends Component {
     document.getElementById("mergeSort").style.display = "flex";
     document.getElementById("selectionSort").style.display = "flex";
     document.getElementById("quickSort").style.display = "flex";
-
     document.getElementById("slider").style.display = "flex";
+    document.getElementById("inputSliderText").style.display = "flex";
     document.getElementById("generateNewValuesButton").style.visibility =
       "visible";
     //Now disable the Stop Button
@@ -231,75 +231,113 @@ class Visualizer extends Component {
     const displayNumberonBar = this.getNumberOnBar();
     return (
       <div>
-        <header id="header">
-          <p className="title">Visualizer</p>
-          <button id="generateNewValuesButton" onClick={this.generateNewValues}>
-            Generate New Values
-          </button>
-
-          <input
-            type="range"
-            id="slider"
-            name="Slider"
-            defaultValue="5"
-            min="5"
-            max={slider_max_value}
-            onChange={this.reSizeArray}
-          />
-          <nav>
-            <div className="algorithmsContainer">
-              <li>
-                <a href="/#" id="bubbleSort" onClick={() => this.Algorithm(0)}>
-                  Bubble-Sort
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#"
-                  id="insertionSort"
-                  onClick={() => this.Algorithm(1)}
-                >
-                  Insertion-Sort
-                </a>
-              </li>
-              <li>
-                <a href="/#" id="heapSort" onClick={() => this.Algorithm(2)}>
-                  Heap-Sort
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/#"
-                  id="selectionSort"
-                  onClick={() => this.Algorithm(3)}
-                >
-                  Selection-Sort
-                </a>
-              </li>
-              <li>
-                <a href="/#" id="quickSort" onClick={() => this.Algorithm(4)}>
-                  Quick-Sort
-                </a>
-              </li>
-              <li>
-                <a href="/#" id="mergeSort" onClick={() => this.mergeSort()}>
-                  Merge-Sort
-                </a>
-              </li>
-            </div>
-          </nav>
-          <button
-            className="stopButton"
-            id="stopButton"
-            href="/#"
+        <nav
+          className="navbar navbar-expand-lg navbar-dark bg-dark"
+          id="myheaderBar"
+        >
+          <a
+            className="navbar-brand"
+            href="#"
             onClick={() => {
               window.location.reload(false);
             }}
           >
-            Stop!
-          </button>
-        </header>
-        <div className="container">
+            Visualizer
+          </a>
+          <div className="nav navbar-nav">
+            <button
+              id="generateNewValuesButton"
+              onClick={this.generateNewValues}
+            >
+              Generate New Values
+            </button>
+            <a class="navbar-brand" id="inputSliderText" href="#">
+              Resize Array
+            </a>
+            <input
+              type="range"
+              id="slider"
+              name="Slider"
+              defaultValue="5"
+              min="5"
+              max={slider_max_value}
+              onChange={this.reSizeArray}
+            />
+            <ul className="navbar-nav mr-auto">
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="bubbleSort"
+                  onClick={() => this.Algorithm(0)}
+                >
+                  Bubble-Sort
+                </a>
+              </li>
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="insertionSort"
+                  onClick={() => this.Algorithm(1)}
+                >
+                  Insertion-Sort <span className="sr-only">(current)</span>
+                </a>
+              </li>
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="heapSort"
+                  onClick={() => this.Algorithm(2)}
+                >
+                  Heap-Sort <span className="sr-only">(current)</span>
+                </a>
+              </li>
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="selectionSort"
+                  onClick={() => this.Algorithm(3)}
+                >
+                  Selection-Sort <span className="sr-only">(current)</span>
+                </a>
+              </li>
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="quickSort"
+                  onClick={() => this.Algorithm(4)}
+                >
+                  Quick-Sort <span className="sr-only">(current)</span>
+                </a>
+              </li>
+              <li className="nav-item active">
+                <a
+                  className="nav-link"
+                  href="#"
+                  id="mergeSort"
+                  onClick={() => this.mergeSort()}
+                >
+                  Merge-Sort <span className="sr-only">(current)</span>
+                </a>
+              </li>
+              <button
+                className="stopButton"
+                id="stopButton"
+                href="/#"
+                onClick={() => {
+                  window.location.reload(false);
+                }}
+              >
+                Stop!
+              </button>
+            </ul>
+          </div>
+        </nav>
+        <div className="myContainer">
           {this.state.list.map((number, indexOfElement) => (
             <div
               className="normalBar"
@@ -323,7 +361,7 @@ class Visualizer extends Component {
     >>Because without render being executed, we cannot find height given to our header element
     2) Store it as a constant(name )
     */
-    header_bar_height = document.getElementById("header").offsetHeight;
+    header_bar_height = document.getElementById("myheaderBar").offsetHeight;
   }
 }
 let {

@@ -1,55 +1,51 @@
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
   font-family: "Montserrat", sans-serif;
   color: #edf0f1;
 }
-.container {
+.myContainer {
   margin-left: 5px; /*Creates a gap of 5px to the left*/
   margin-right: 5px; /*Creates a gap of 5px to the right*/
 }
-header {
-  display: flex;
+#myheaderBar {
   justify-content: space-around;
-  align-items: center;
-  padding: 30px 10%;
-  background-color: #24252a;
+  padding: 30px;
 }
-.title {
-  color: aliceblue;
-  font-size: large;
+#inputSliderText {
+  margin-left: 7px;
+  margin-top: 4px;
+  font-size: 18px !important;
+}
+.navbar-nav > li {
+  margin-left: 15px;
+  margin-right: 15px;
 }
 .numberOnBar {
   color: aliceblue;
   font-weight: bold;
 }
-.algorithmsContainer {
-  list-style: none;
-  display: flex;
+/*
+This is for the algorithms names
+--STARTS---
+*/
+.nav-link {
+  transition: color 0.3s ease 0s !important;
 }
-.algorithmsContainer a {
-  text-decoration: none;
+.nav-link:hover {
+  color: #0088a9 !important;
 }
-.algorithmsContainer li {
-  padding: 0px 20px;
-}
-.algorithmsContainer li a {
-  transition: color 0.3s ease 0s;
-}
-.algorithmsContainer li a:hover {
-  color: #0088a9;
-}
+/*
+--ENDS---
+*/
 button {
   padding: 9px 25px;
   font-size: 16px;
   background-color: #0082c8;
-  border-radius: 20px;
+  border-radius: 20px !important;
   border: none;
   cursor: pointer;
 }
 button:focus {
-  outline: none;
+  outline: none !important;
 }
 .stopButton {
   display: none; /*We will hide this button initially*/
