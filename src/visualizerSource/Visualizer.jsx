@@ -327,7 +327,7 @@ class Visualizer extends Component {
               <button
                 className="stopButton"
                 id="stopButton"
-                href="/#"
+                href="#"
                 onClick={() => {
                   window.location.reload(false);
                 }}
