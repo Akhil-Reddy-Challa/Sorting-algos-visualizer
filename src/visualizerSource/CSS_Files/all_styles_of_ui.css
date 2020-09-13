@@ -2,6 +2,12 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Montserrat", sans-serif;
+  color: #edf0f1;
+}
+.container {
+  margin-left: 5px; /*Creates a gap of 5px to the left*/
+  margin-right: 5px; /*Creates a gap of 5px to the right*/
 }
 header {
   display: flex;
@@ -11,122 +17,56 @@ header {
   background-color: #24252a;
 }
 .title {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 500;
   color: aliceblue;
   font-size: large;
 }
 .numberOnBar {
-  font-family: "Montserrat", sans-serif;
   color: aliceblue;
   font-weight: bold;
 }
-.nav__links a,
-.cta,
-.overlay__content a {
-  font-family: "Montserrat", sans-serif;
-  font-weight: 500;
-  color: #edf0f1;
-  text-decoration: none;
-}
-
-.nav__links {
+.algorithmsContainer {
   list-style: none;
   display: flex;
 }
-
-.nav__links li {
+.algorithmsContainer a {
+  text-decoration: none;
+}
+.algorithmsContainer li {
   padding: 0px 20px;
 }
-
-.nav__links li a {
+.algorithmsContainer li a {
   transition: color 0.3s ease 0s;
 }
-
-.nav__links li a:hover {
+.algorithmsContainer li a:hover {
   color: #0088a9;
 }
-
-.cta {
+button {
   padding: 9px 25px;
+  font-size: 16px;
   background-color: #0082c8;
+  border-radius: 20px;
   border: none;
-  border-radius: 50px;
   cursor: pointer;
-  transition: background-color 0.3s ease 0s;
 }
-
-.cta:hover {
-  background-color: #0082c8;
+button:focus {
+  outline: none;
 }
-
-/* Mobile Nav */
-
-.menu {
-  display: none;
-}
-
-.overlay {
-  height: 100%;
-  width: 0;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  background-color: #24252a;
-  overflow-x: hidden;
-  transition: width 0.5s ease 0s;
-}
-
-.overlay--active {
-  width: 100%;
-}
-
-.overlay__content {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.overlay a {
-  padding: 15px;
-  font-size: 36px;
-  display: block;
-  transition: color 0.3s ease 0s;
-}
-.overlay a:hover,
-.overlay a:focus {
-  color: #0088a9;
-}
-.overlay .close {
-  position: absolute;
-  top: 20px;
-  right: 45px;
-  font-size: 60px;
-  color: #edf0f1;
-}
-.container {
-  margin-left: 5px; /*Creates a gap of 5px to the left*/
-  margin-right: 5px; /*Creates a gap of 5px to the right*/
+.stopButton {
+  display: none; /*We will hide this button initially*/
 }
 .normalBar {
-  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #00c6ff;
   text-align: center;
 }
 .redBar {
-  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #eb3349;
   text-align: center;
 }
 .greenBar {
-  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #38ef7d;

@@ -233,14 +233,10 @@ class Visualizer extends Component {
       <div>
         <header id="header">
           <p className="title">Visualizer</p>
-          <a
-            className="cta"
-            href="/#"
-            id="generateNewValuesButton"
-            onClick={this.generateNewValues}
-          >
-            Generate New Values!
-          </a>
+          <button id="generateNewValuesButton" onClick={this.generateNewValues}>
+            Generate New Values
+          </button>
+
           <input
             type="range"
             id="slider"
@@ -251,7 +247,7 @@ class Visualizer extends Component {
             onChange={this.reSizeArray}
           />
           <nav>
-            <div className="nav__links">
+            <div className="algorithmsContainer">
               <li>
                 <a href="/#" id="bubbleSort" onClick={() => this.Algorithm(0)}>
                   Bubble-Sort
@@ -292,17 +288,16 @@ class Visualizer extends Component {
               </li>
             </div>
           </nav>
-          <a
-            className="cta"
+          <button
+            className="stopButton"
             id="stopButton"
             href="/#"
-            style={{ display: "none" }}
             onClick={() => {
               window.location.reload(false);
             }}
           >
             Stop!
-          </a>
+          </button>
         </header>
         <div className="container">
           {this.state.list.map((number, indexOfElement) => (
