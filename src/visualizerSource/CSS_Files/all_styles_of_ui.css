@@ -4,7 +4,6 @@
 }
 .myContainer {
   margin-left: 5px; /*Creates a gap of 5px to the left*/
-  margin-right: 5px; /*Creates a gap of 5px to the right*/
 }
 #myheaderBar {
   justify-content: space-around;
