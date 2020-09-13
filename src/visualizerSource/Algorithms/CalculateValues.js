@@ -2,13 +2,13 @@ export default function CalculateValues() {
   /*
     Slider_max_value:
     This is responsible for calculating the max_value to slider
-    1) It considers device_Width and subtracts 10px(Because of margin-right{5px} & margin-left{5px} in container class CSS)
+    1) It considers device_Width and subtracts 10px(Because of margin-right{5px} & margin-left{15px} in container class CSS)
     2) It divides the above by 3, because smallest_bar occupies 3pixels(bar:1px, left_margin:2px)
     3) This is usefuly when App is opened in mobile-browsers
     */
   let slider_max_value = Math.min(
     300,
-    Math.floor((window.innerWidth - 10) / 3)
+    Math.floor((window.innerWidth - 20) / 3)
   );
 
   //Holds the count of bars on the screen, initial is 5
