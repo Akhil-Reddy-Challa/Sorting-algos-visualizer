@@ -107,22 +107,26 @@ header {
   font-size: 60px;
   color: #edf0f1;
 }
+.container {
+  margin-left: 5px; /*Creates a gap of 5px to the left*/
+  margin-right: 5px; /*Creates a gap of 5px to the right*/
+}
 .normalBar {
-  width: 3px;
+  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #00c6ff;
   text-align: center;
 }
 .redBar {
-  width: 3px;
+  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #eb3349;
   text-align: center;
 }
 .greenBar {
-  width: 3px;
+  width: 1px;
   display: inline-block;
   margin-left: 2px;
   background-color: #38ef7d;

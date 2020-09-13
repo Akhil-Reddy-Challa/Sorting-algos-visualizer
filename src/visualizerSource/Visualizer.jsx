@@ -13,7 +13,7 @@ class Visualizer extends Component {
   };
   generateValuesInArray = () => {
     const min_number = 5;
-    //Now based on our device_height we must set our max number
+    //Based on our device_height we must set our max number
     /*
     1. This(window.innerHeight) gives us the screen_height
     2. Our nav bar occupies (header_bar_height) pixels
@@ -43,8 +43,14 @@ class Visualizer extends Component {
     //Now update the array size
     number_of_bars_to_display = event.target.value;
     //As the bars increase/decrease we should re-compute the bar width
+    /*
+    1) Find screen_width
+    2) Subtract 10px(Because of margin-right{5px} & margin-left{5px} in container class CSS)
+    3) Subtract (number_of_bars*2) pixels i.e each bar has a left_margin:2px, hence multiply with 2
+    4) Divide with total_number_of_bars
+   */
     width_of_bars =
-      (window.innerWidth - 1 - number_of_bars_to_display * 2) /
+      (window.innerWidth - 10 - number_of_bars_to_display * 2) /
       number_of_bars_to_display;
 
     this.generateNewValues();
