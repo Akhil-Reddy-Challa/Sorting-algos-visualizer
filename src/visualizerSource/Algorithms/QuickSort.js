@@ -27,7 +27,6 @@ function quickSort(array, leftIndex, rightIndex, animations) {
 function partition(array, leftIndex, rightIndex, animations) {
   // Find the pivot by adding the two indexes together
   // and dividing by two (the middle element, effectively).
-  var pivotIndex = Math.floor((rightIndex + leftIndex) / 2);
   var pivot = array[Math.floor((rightIndex + leftIndex) / 2)];
   // Once the leftIndex reference is greater than the rightIndex reference,
   // we have finished sorting this set of array, and we can return.

@@ -5,7 +5,7 @@ class Visualizer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: [100, 90, 80, 70, 60],
+      list: [31, 100, 71, 43, 108],
     };
   }
   getNumberOnBar = () => {
@@ -45,12 +45,12 @@ class Visualizer extends Component {
     //As the bars increase/decrease we should re-compute the bar width
     /*
     1) Find screen_width
-    2) Subtract 10px(Because of margin-right{5px} & margin-left{15px} in container class CSS)
+    2) Subtract 40px(Because of margin-right{20px} & margin-left{20px} in container class CSS)
     3) Subtract (number_of_bars*2) pixels i.e each bar has a left_margin:2px, hence multiply with 2
     4) Divide with total_number_of_bars
    */
     width_of_bars =
-      (window.innerWidth - 20 - number_of_bars_to_display * 2) /
+      (window.innerWidth - 40 - number_of_bars_to_display * 2) /
       number_of_bars_to_display;
 
     this.generateNewValues();
@@ -60,7 +60,7 @@ class Visualizer extends Component {
     else if (numberOfElements < 40) return 60;
     else if (numberOfElements < 100) return 50;
     else if (numberOfElements < 200) return 14;
-    else return 2;
+    else return 4;
   };
   Algorithm = (algorithm_name) => {
     this.disableAllTheButtons(); //Removes all the buttons on the screen
@@ -251,7 +251,7 @@ class Visualizer extends Component {
             >
               Generate New Values
             </button>
-            <a class="navbar-brand" id="inputSliderText" href="#">
+            <a className="navbar-brand" id="inputSliderText" href="#">
               Resize Array
             </a>
             <input
