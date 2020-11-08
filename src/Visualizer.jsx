@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import AlgorithmCaller from "./Algorithms/CallAlgorithm";
 import CalculateValues from "./Algorithms/CalculateValues";
+import NavBar from "./components/NavBar";
 class Visualizer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      list: [31, 100, 71, 43, 108],
-    };
-  }
+  state = {
+    list: [31, 100, 71, 43, 108],
+  };
   getNumberOnBar = () => {
     return width_of_bars > 30 ? "aliceblue" : "transparent";
   };
@@ -63,16 +61,21 @@ class Visualizer extends Component {
     else return 4;
   };
   Algorithm = (algorithm_name) => {
-    this.disableAllTheButtons(); //Removes all the buttons on the screen
+    if (algorithm_name === 5) {
+      this.mergeSort();
+      return;
+    }
+    //this.disableAllTheButtons(); //Removes all the buttons on the screen
     /*
      *parameter = algorithm tells us the algorithm to call
      0 === Bubble Sort
      1 === Insertion Sort
      2 === Heap Sort
      3 === Selection Sort
-     We don't call Merge Sort, as it is async implementaion
+     4 === Quick Sort
+     We don't call Merge Sort using the below code, as it is async implementaion
      */
-    //Now call the func, it returns an array with all the animations
+    //Now call the func, it returns an array with all the animation
     let all_the_animations = AlgorithmCaller(
       algorithm_name,
       this.state.list.slice()
@@ -82,7 +85,7 @@ class Visualizer extends Component {
   };
   mergeSort = async () => {
     //Merge sort is  async implementation, hence I was unable to push it to Algorithms folder
-    this.disableAllTheButtons();
+    //this.disableAllTheButtons();
     let array = this.state.list;
     let i, j, k, size, l1, h1, l2, h2;
     let n = array.length;
@@ -138,7 +141,6 @@ class Visualizer extends Component {
 
       this.setState({ array });
     }
-    this.enableAllTheButtons();
   };
   sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
@@ -172,7 +174,7 @@ class Visualizer extends Component {
     //We use setTimeout because, we want the array to be updated after the animation is done
     setTimeout(() => this.setState({ list: array }), timeToPause * timer++);
     //During algo start, we disable all the buttons, now we have to re-enable them
-    setTimeout(() => this.enableAllTheButtons(), timeToPause * timer);
+    //setTimeout(() => this.enableAllTheButtons(), timeToPause * timer);
   };
   changeTheColorOfNodes = (node1, node2, color) => {
     document.getElementById(node1).setAttribute("class", color + "Bar");
@@ -196,148 +198,18 @@ class Visualizer extends Component {
     array[index1] = array[index2];
     array[index2] = temp;
   };
-  disableAllTheButtons = () => {
-    //Disables all the buttons,slider,slider-text
-    document.getElementById("bubbleSort").style.display = "none";
-    document.getElementById("heapSort").style.display = "none";
-    document.getElementById("insertionSort").style.display = "none";
-    document.getElementById("mergeSort").style.display = "none";
-    document.getElementById("selectionSort").style.display = "none";
-    document.getElementById("quickSort").style.display = "none";
-    document.getElementById("slider").style.display = "none";
-    document.getElementById("inputSliderText").style.display = "none";
-    document.getElementById("generateNewValuesButton").style.visibility =
-      "hidden";
-    //Now enable the Stop Button
-    document.getElementById("stopButton").style.display = "flex";
-  };
-  enableAllTheButtons = () => {
-    //Contrast to disableAllbtns method
-    //enables all the buttons,slider
-    document.getElementById("bubbleSort").style.display = "flex";
-    document.getElementById("heapSort").style.display = "flex";
-    document.getElementById("insertionSort").style.display = "flex";
-    document.getElementById("mergeSort").style.display = "flex";
-    document.getElementById("selectionSort").style.display = "flex";
-    document.getElementById("quickSort").style.display = "flex";
-    document.getElementById("slider").style.display = "flex";
-    document.getElementById("inputSliderText").style.display = "flex";
-    document.getElementById("generateNewValuesButton").style.visibility =
-      "visible";
-    //Now disable the Stop Button
-    document.getElementById("stopButton").style.display = "none";
-  };
   render() {
     const displayNumberonBar = this.getNumberOnBar();
+    console.log("displayNumberonBar", displayNumberonBar);
     return (
       <div>
-        <nav
-          className="navbar navbar-expand-lg navbar-dark bg-dark"
-          id="myheaderBar"
-        >
-          <a
-            className="navbar-brand"
-            href="#"
-            onClick={() => {
-              window.location.reload(false);
-            }}
-          >
-            Visualizer
-          </a>
-          <div className="nav navbar-nav">
-            <button
-              id="generateNewValuesButton"
-              onClick={this.generateNewValues}
-            >
-              Generate New Values
-            </button>
-            <a className="navbar-brand" id="inputSliderText" href="#">
-              Resize Array
-            </a>
-            <input
-              type="range"
-              id="slider"
-              name="Slider"
-              defaultValue="5"
-              min="5"
-              max={slider_max_value}
-              onChange={this.reSizeArray}
-            />
-            <ul className="navbar-nav mr-auto">
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="bubbleSort"
-                  onClick={() => this.Algorithm(0)}
-                >
-                  Bubble-Sort
-                </a>
-              </li>
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="insertionSort"
-                  onClick={() => this.Algorithm(1)}
-                >
-                  Insertion-Sort <span className="sr-only">(current)</span>
-                </a>
-              </li>
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="heapSort"
-                  onClick={() => this.Algorithm(2)}
-                >
-                  Heap-Sort <span className="sr-only">(current)</span>
-                </a>
-              </li>
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="selectionSort"
-                  onClick={() => this.Algorithm(3)}
-                >
-                  Selection-Sort <span className="sr-only">(current)</span>
-                </a>
-              </li>
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="quickSort"
-                  onClick={() => this.Algorithm(4)}
-                >
-                  Quick-Sort <span className="sr-only">(current)</span>
-                </a>
-              </li>
-              <li className="nav-item active">
-                <a
-                  className="nav-link"
-                  href="#"
-                  id="mergeSort"
-                  onClick={() => this.mergeSort()}
-                >
-                  Merge-Sort <span className="sr-only">(current)</span>
-                </a>
-              </li>
-              <button
-                className="stopButton"
-                id="stopButton"
-                href="#"
-                onClick={() => {
-                  window.location.reload(false);
-                }}
-              >
-                Stop!
-              </button>
-            </ul>
-          </div>
-        </nav>
-        <div className="myContainer">
+        <NavBar
+          slider_max_value={slider_max_value}
+          onGenerateNewValues={this.generateNewValues}
+          onResizeArray={this.reSizeArray}
+          onAlgorithmSelect={this.Algorithm}
+        />
+        <div className="arrayBarsContainer">
           {this.state.list.map((number, indexOfElement) => (
             <div
               className="normalBar"
@@ -357,11 +229,11 @@ class Visualizer extends Component {
   componentDidMount() {
     //This is invoked automatically after render()
     /*
-    1) This gives us an opportunity to caluculate height allocated to <header> element
+    1) This gives us an opportunity to calculate height allocated to <header> element
     >>Because without render being executed, we cannot find height given to our header element
     2) Store it as a constant(name )
     */
-    header_bar_height = document.getElementById("myheaderBar").offsetHeight;
+    header_bar_height = document.getElementById("headerBar").offsetHeight;
   }
 }
 let {

@@ -1,11 +1,11 @@
 * {
   font-family: "Montserrat", sans-serif;
-  color: #edf0f1;
+  color: #edf0f1 !important;
 }
-.myContainer {
+.arrayBarsContainer {
   margin-left: 5px; /*Creates a gap of 5px to the left*/
 }
-#myheaderBar {
+#headerBar {
   justify-content: space-around;
   padding: 30px;
 }
@@ -18,16 +18,12 @@
 #slider {
   cursor: pointer;
 }
-.navbar-nav > li {
-  margin-left: 15px;
-  margin-right: 15px;
-}
 .numberOnBar {
   color: aliceblue;
   font-weight: bold;
 }
 /*
-This is for the algorithms names
+Below is for the transistion effect on Algo names
 --STARTS---
 */
 .nav-link {
@@ -47,6 +43,7 @@ button {
   border: none;
   cursor: pointer;
 }
+/*Prevents the red-border when clicking the button*/
 button:focus {
   outline: none !important;
 }
