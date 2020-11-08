@@ -18,10 +18,6 @@ export function HeapSort(array) {
   }
   return all_the_animations;
 }
-function compare(a1, a2) {
-  for (let i = 0; i < a1.length; i++) if (a1[i] !== a2[i]) return false;
-  return true;
-}
 function heapify(arr, n, i, all_the_animations) {
   let largest = i; // Initialize largest as root
   let l = 2 * i + 1; // left = 2*i + 1

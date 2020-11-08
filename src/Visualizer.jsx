@@ -7,7 +7,7 @@ class Visualizer extends Component {
     list: [31, 100, 71, 43, 108],
   };
   getNumberOnBar = () => {
-    return width_of_bars > 30 ? "aliceblue" : "transparent";
+    return width_of_bars > 30 ? "visible" : "hidden";
   };
   generateValuesInArray = () => {
     const min_number = 5;
@@ -61,13 +61,11 @@ class Visualizer extends Component {
     else return 4;
   };
   Algorithm = (algorithm_name) => {
-    if (algorithm_name === 5) {
-      this.mergeSort();
-      return;
-    }
-    //this.disableAllTheButtons(); //Removes all the buttons on the screen
+    //Make the navbar components un-clickable
+    document.getElementById("headerBar").style.pointerEvents = "none";
+
     /*
-     *parameter = algorithm tells us the algorithm to call
+     @param(algorithm_name) tells us the algorithm user clicked
      0 === Bubble Sort
      1 === Insertion Sort
      2 === Heap Sort
@@ -76,6 +74,10 @@ class Visualizer extends Component {
      We don't call Merge Sort using the below code, as it is async implementaion
      */
     //Now call the func, it returns an array with all the animation
+    if (algorithm_name === 5) {
+      this.mergeSort();
+      return;
+    }
     let all_the_animations = AlgorithmCaller(
       algorithm_name,
       this.state.list.slice()
@@ -173,8 +175,11 @@ class Visualizer extends Component {
     //Finally, we have to sort the array(list) in the React state
     //We use setTimeout because, we want the array to be updated after the animation is done
     setTimeout(() => this.setState({ list: array }), timeToPause * timer++);
-    //During algo start, we disable all the buttons, now we have to re-enable them
-    //setTimeout(() => this.enableAllTheButtons(), timeToPause * timer);
+    //During algo start, we make navbar components un-clickable, now we have to re-enable them
+    setTimeout(
+      () => (document.getElementById("headerBar").style.pointerEvents = "auto"),
+      timeToPause * timer
+    );
   };
   changeTheColorOfNodes = (node1, node2, color) => {
     document.getElementById(node1).setAttribute("class", color + "Bar");
@@ -200,7 +205,6 @@ class Visualizer extends Component {
   };
   render() {
     const displayNumberonBar = this.getNumberOnBar();
-    console.log("displayNumberonBar", displayNumberonBar);
     return (
       <div>
         <NavBar
@@ -217,7 +221,10 @@ class Visualizer extends Component {
               key={indexOfElement}
               style={{ height: number * 3, width: width_of_bars }}
             >
-              <p className="numberOnBar" style={{ color: displayNumberonBar }}>
+              <p
+                className="numberOnBar"
+                style={{ visibility: displayNumberonBar }}
+              >
                 {number}
               </p>
             </div>

@@ -16,6 +16,5 @@ export function BubbleSort(array) {
       }
     }
   }
-  console.log(all_the_animations);
   return all_the_animations;
 }

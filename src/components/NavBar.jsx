@@ -10,9 +10,12 @@ class NavBar extends Component {
       "Merge-Sort",
     ];
     return (
-      <nav class="navbar navbar-expand-lg navbar-light bg-dark" id="headerBar">
+      <nav
+        className="navbar navbar-expand-lg navbar-light bg-dark"
+        id="headerBar"
+      >
         <a
-          class="navbar-brand"
+          className="navbar-brand"
           href="/#"
           onClick={() => {
             window.location.reload();
