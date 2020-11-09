@@ -3,12 +3,13 @@
   color: #edf0f1 !important;
 }
 .arrayBarsContainer {
-  margin-left: 5px; /*Creates a gap of 5px to the left*/
+  margin-left: 20px; /*Creates a gap of 20px to the left*/
+  margin-right: 20px;
 }
 #headerBar {
   justify-content: space-around;
   padding: 30px;
-  pointer-events: auto; /*By setting this to none, all the btns i navbar would be unclickable */
+  pointer-events: auto; /*By setting this to none, all the btns on the navbar would be unclickable */
 }
 #inputSliderText {
   margin-left: 7px;

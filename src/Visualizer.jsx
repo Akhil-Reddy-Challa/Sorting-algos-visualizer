@@ -9,32 +9,24 @@ class Visualizer extends Component {
   getNumberOnBar = () => {
     return width_of_bars > 30 ? "visible" : "hidden";
   };
-  generateValuesInArray = () => {
+  generateNewValues = () => {
+    //Goal: Generate an array with size(number_of_bars_to_display) with all random numbers
+    const list = [];
     const min_number = 5;
     //Based on our device_height we must set our max number
     /*
-    1. This(window.innerHeight) gives us the screen_height
+    1. (window.innerHeight) gives us the screen_height
     2. Our nav bar occupies (header_bar_height) pixels
     >> header_bar_height = Calculates the height of header bar
     3. Hence we subtract them from device height
     4. Now divide by 3, because we set our array_bar height by multipyling the number by 3
     */
-
     const max_number = Math.floor((window.innerHeight - header_bar_height) / 3);
-    const list = [];
     for (let i = 0; i < number_of_bars_to_display; i++)
       list.push(
         Math.trunc(min_number + Math.random() * (max_number - min_number))
       );
     this.setState({ list });
-  };
-  generateNewValues = () => {
-    //Now delete all elements in array, so that we can use above method(generateValuesInArray)
-    //this.state.list.length = 0; //This will empty the array( Reference: https://stackoverflow.com/questions/1232040/how-do-i-empty-an-array-in-javascript)
-    //console.log("list is:", this.state.list);
-
-    this.setState({ list: [] }); //This will make out list empty
-    this.generateValuesInArray();
   };
   reSizeArray = (event) => {
     //User selects a value
@@ -237,8 +229,7 @@ class Visualizer extends Component {
     //This is invoked automatically after render()
     /*
     1) This gives us an opportunity to calculate height allocated to <header> element
-    >>Because without render being executed, we cannot find height given to our header element
-    2) Store it as a constant(name )
+    >>Without render being executed, we cannot find height given to our header element
     */
     header_bar_height = document.getElementById("headerBar").offsetHeight;
   }
