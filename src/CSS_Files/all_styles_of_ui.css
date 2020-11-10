@@ -54,19 +54,19 @@ button:focus {
 }
 .normalBar {
   display: inline-block;
-  margin-left: 2px;
+  margin-right: 2px;
   background-color: #00c6ff;
   text-align: center;
 }
 .redBar {
   display: inline-block;
-  margin-left: 2px;
+  margin-right: 2px;
   background-color: #eb3349;
   text-align: center;
 }
 .greenBar {
   display: inline-block;
-  margin-left: 2px;
+  margin-right: 2px;
   background-color: #38ef7d;
   text-align: center;
 }

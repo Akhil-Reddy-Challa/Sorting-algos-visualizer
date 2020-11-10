@@ -42,7 +42,7 @@ class Visualizer extends Component {
     width_of_bars =
       (window.innerWidth - 40 - number_of_bars_to_display * 2) /
       number_of_bars_to_display;
-
+    console.log("New width is:", width_of_bars);
     this.generateNewValues();
   };
   getTimeToPause = (numberOfElements) => {
