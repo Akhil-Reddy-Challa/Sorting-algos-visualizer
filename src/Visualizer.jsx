@@ -7,11 +7,11 @@ class Visualizer extends Component {
     list: [31, 100, 71, 43, 108],
   };
   getNumberOnBar = () => {
-    return width_of_bars > 30 ? "visible" : "hidden";
+    return width_of_bar > 30 ? "visible" : "hidden";
   };
   generateNewValues = () => {
     //Goal: Generate an array with size(number_of_bars_to_display) with all random numbers
-    const list = [];
+    var list = [];
     const min_number = 5;
     //Based on our device_height we must set our max number
     /*
@@ -29,20 +29,34 @@ class Visualizer extends Component {
     this.setState({ list });
   };
   reSizeArray = (event) => {
-    //User selects a value
+    //User selects a new value
     //Now update the array size
-    number_of_bars_to_display = event.target.value;
+    number_of_bars_to_display = parseInt(event.target.value);
     //As the bars increase/decrease we should re-compute the bar width
     /*
     1) Find screen_width
     2) Subtract 40px(Because of margin-right{20px} & margin-left{20px} in container class CSS)
-    3) Subtract (number_of_bars*2) pixels i.e each bar has a left_margin:2px, hence multiply with 2
+    3) Subtract (number_of_bars*2) pixels i.e each bar has a right_margin:2px, hence multiply with 2
     4) Divide with total_number_of_bars
+    5) Parse the floating width and compute the width of each bar
+    6) Compute the left over width
    */
-    width_of_bars =
-      (window.innerWidth - 40 - number_of_bars_to_display * 2) /
-      number_of_bars_to_display;
-    console.log("New width is:", width_of_bars);
+
+    let available_width_on_the_screen =
+      window.innerWidth - 40 - number_of_bars_to_display * 2;
+
+    width_of_bar = available_width_on_the_screen / number_of_bars_to_display; //Floating point width
+    //Width would be some floating point number, like 3.45 => Convert it to 3
+    //In the process of flooring the width, we loose (0.45 * Total_bars) worth of space
+    //So store it in left_over_width
+    let left_over_width = width_of_bar - Math.floor(width_of_bar);
+    left_over_width *= number_of_bars_to_display;
+
+    width_of_bar = parseInt(width_of_bar); //Parse the floating width
+    let new_bars = parseInt(left_over_width / (width_of_bar + 2)); //Divide with left_over with (parsed_width+2), 2 is for margin-right of array bar
+
+    number_of_bars_to_display += new_bars; //Add it to the total
+
     this.generateNewValues();
   };
   getTimeToPause = (numberOfElements) => {
@@ -211,7 +225,7 @@ class Visualizer extends Component {
               className="normalBar"
               id={indexOfElement}
               key={indexOfElement}
-              style={{ height: number * 3, width: width_of_bars }}
+              style={{ height: number * 3, width: width_of_bar }}
             >
               <p
                 className="numberOnBar"
@@ -237,7 +251,7 @@ class Visualizer extends Component {
 let {
   slider_max_value,
   number_of_bars_to_display,
-  width_of_bars,
+  width_of_bar,
   header_bar_height,
 } = CalculateValues();
 export default Visualizer;
