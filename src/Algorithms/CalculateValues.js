@@ -7,7 +7,7 @@ export default function CalculateValues() {
     3) This is useful when App is opened in mobile-browsers
     */
   let slider_max_value = Math.floor((window.innerWidth - 40) / 3);
-  slider_max_value = Math.min(400, slider_max_value);
+  slider_max_value = Math.min(300, slider_max_value);
 
   //Holds the count of bars on the screen, initial is 5
   let number_of_bars_to_display = 5;

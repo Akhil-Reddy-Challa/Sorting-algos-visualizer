@@ -6,7 +6,7 @@ class Visualizer extends Component {
   state = {
     list: [31, 100, 71, 43, 108],
   };
-  getNumberOnBar = () => {
+  getFontSize = () => {
     return width_of_bar > 30 ? "visible" : "hidden";
   };
   generateNewValues = () => {
@@ -60,11 +60,11 @@ class Visualizer extends Component {
     this.generateNewValues();
   };
   getTimeToPause = (numberOfElements) => {
-    if (numberOfElements < 20) return 100;
-    else if (numberOfElements < 40) return 60;
-    else if (numberOfElements < 100) return 50;
-    else if (numberOfElements < 200) return 14;
-    else return 4;
+    if (numberOfElements < 20) return 130;
+    else if (numberOfElements < 40) return 50;
+    else if (numberOfElements < 100) return 25;
+    else if (numberOfElements < 200) return 12;
+    else return 2;
   };
   Algorithm = (algorithm_name) => {
     //Make the navbar components un-clickable
@@ -210,7 +210,7 @@ class Visualizer extends Component {
     array[index2] = temp;
   };
   render() {
-    const displayNumberonBar = this.getNumberOnBar();
+    const fontSizeForNumber = this.getFontSize();
     return (
       <div>
         <NavBar
@@ -229,7 +229,7 @@ class Visualizer extends Component {
             >
               <p
                 className="numberOnBar"
-                style={{ visibility: displayNumberonBar }}
+                style={{ visibility: fontSizeForNumber }}
               >
                 {number}
               </p>
