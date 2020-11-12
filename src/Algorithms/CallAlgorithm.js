@@ -10,6 +10,7 @@ export default function CallAlgorithm(algo_name, array) {
      1 === Insertion Sort
      2 === Heap Sort
      3 === Selection Sort
+     default is QuickSort
      We don't call Merge Sort, as it is async implementaion
      */
   switch (algo_name) {
@@ -21,7 +22,7 @@ export default function CallAlgorithm(algo_name, array) {
       return HeapSort(array);
     case 3:
       return SelectionSort(array);
-    case 4:
+    default:
       return QuickSort(array);
   }
 }
