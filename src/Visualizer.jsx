@@ -69,7 +69,6 @@ class Visualizer extends Component {
   Algorithm = (algorithm_name) => {
     //Make the navbar components un-clickable
     document.getElementById("headerBar").style.pointerEvents = "none";
-
     /*
      @param(algorithm_name) tells us the algorithm user clicked
      0 === Bubble Sort
@@ -77,19 +76,17 @@ class Visualizer extends Component {
      2 === Heap Sort
      3 === Selection Sort
      4 === Quick Sort
-     We don't call Merge Sort using the below code, as it is async implementaion
+     We don't call Merge Sort using AlgorithCaller, as it is async implementaion, invoke mergeSort directly
      */
-    //Now call the func, it returns an array with all the animation
     if (algorithm_name === 5) {
       this.mergeSort();
       return;
     }
-    let all_the_animations = AlgorithmCaller(
-      algorithm_name,
-      this.state.list.slice()
-    );
+    //Now call the func, it returns an array with all the animation
+    let arr = this.state.list.slice();
+    let all_the_animations = AlgorithmCaller(algorithm_name, arr);
     //Now call the func(paintTheNodes) to start animating
-    this.paintTheNodes(all_the_animations, this.state.list.slice());
+    this.paintTheNodes(all_the_animations);
   };
   mergeSort = async () => {
     //Merge sort is  async implementation, hence I was unable to push it to Algorithms folder
@@ -149,17 +146,21 @@ class Visualizer extends Component {
 
       this.setState({ array });
     }
+    console.log("Here already");
+    //During algo start, we make navbar components un-clickable, now we have to re-enable them
+    document.getElementById("headerBar").style.pointerEvents = "auto";
   };
   sleep = (milliseconds) => {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
   };
-  paintTheNodes = (all_the_animations, array) => {
+  paintTheNodes = (all_the_animations) => {
     /**
      * Responsible for animating the arrays_bars
      * all_the_animations == Contains all the changes recorded during our sorting-algorithms
      */
     var timer = 1;
-    var timeToPause = this.getTimeToPause(array.length);
+    let { list } = this.state;
+    var timeToPause = this.getTimeToPause(list.length);
     //Now color the nodes
     for (let node of all_the_animations) {
       let i1 = node[0];
@@ -172,7 +173,7 @@ class Visualizer extends Component {
         () => this.changeTheColorOfNodes(i1, i2, "red"),
         timeToPause * timer++
       );
-      setTimeout(() => this.swapElements(i1, i2, array), timeToPause * timer++);
+      setTimeout(() => this.swapElements(i1, i2, list), timeToPause * timer++);
       setTimeout(
         () => this.changeTheColorOfNodes(i1, i2, "normal"),
         timeToPause * timer++
@@ -180,7 +181,7 @@ class Visualizer extends Component {
     }
     //Finally, we have to sort the array(list) in the React state
     //We use setTimeout because, we want the array to be updated after the animation is done
-    setTimeout(() => this.setState({ list: array }), timeToPause * timer++);
+    setTimeout(() => this.setState({ list }), timeToPause * timer++);
     //During algo start, we make navbar components un-clickable, now we have to re-enable them
     setTimeout(
       () => (document.getElementById("headerBar").style.pointerEvents = "auto"),
