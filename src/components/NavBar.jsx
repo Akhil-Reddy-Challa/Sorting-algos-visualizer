@@ -14,21 +14,24 @@ class NavBar extends Component {
         className="navbar navbar-expand-lg navbar-light bg-dark"
         id="headerBar"
       >
-        <a
-          className="navbar-brand"
-          href="/#"
+        <p
+          className="navbar-brand m-2"
+          id="appName"
           onClick={() => {
             window.location.reload();
           }}
         >
           Sorting-Visualizer
-        </a>
-        <button onClick={this.props.onGenerateNewValues}>
+        </p>
+        <button
+          className="generateNewValuesButton"
+          onClick={this.props.onGenerateNewValues}
+        >
           Generate New Values
         </button>
-        <a className="navbar-brand" id="inputSliderText" href="/#">
+        <p className="navbar-brand m-2" id="inputSliderText">
           Resize Array
-        </a>
+        </p>
         <input
           type="range"
           id="slider"
@@ -41,25 +44,14 @@ class NavBar extends Component {
         <ul className="navbar-nav mr-auto">
           {sortingAlgorithms.map((algoName, index) => (
             <li key={index} className="nav-item active">
-              <a
-                className="nav-link"
-                href="/#"
+              <p
+                className="nav-link m-2"
                 onClick={() => this.props.onAlgorithmSelect(index)}
               >
                 {algoName}
-              </a>
+              </p>
             </li>
           ))}
-          <button
-            className="stopButton"
-            id="stopButton"
-            href="/#"
-            onClick={() => {
-              window.location.reload();
-            }}
-          >
-            Stop!
-          </button>
         </ul>
       </nav>
     );

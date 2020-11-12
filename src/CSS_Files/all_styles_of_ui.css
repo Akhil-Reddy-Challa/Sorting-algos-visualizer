@@ -1,5 +1,5 @@
 * {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", sans-serif !important;
   color: #edf0f1 !important;
 }
 .arrayBarsContainer {
@@ -12,10 +12,10 @@
   pointer-events: auto; /*By setting this to none, all the btns on the navbar would be unclickable */
 }
 #inputSliderText {
-  margin-left: 7px;
-  margin-top: 4px;
-  font-size: 18px !important;
   cursor: default;
+}
+#appName {
+  cursor: pointer;
 }
 #slider {
   cursor: pointer;
@@ -33,11 +33,12 @@ Below is for the transistion effect on Algo names
 }
 .nav-link:hover {
   color: #0088a9 !important;
+  cursor: pointer;
 }
 /*
 --ENDS---
 */
-button {
+.generateNewValuesButton {
   padding: 9px 25px;
   font-size: 16px;
   background-color: #0082c8;
@@ -46,11 +47,8 @@ button {
   cursor: pointer;
 }
 /*Prevents the red-border when clicking the button*/
-button:focus {
+.generateNewValuesButton:focus {
   outline: none !important;
-}
-.stopButton {
-  display: none; /*We will hide this button initially*/
 }
 .normalBar {
   display: inline-block;
