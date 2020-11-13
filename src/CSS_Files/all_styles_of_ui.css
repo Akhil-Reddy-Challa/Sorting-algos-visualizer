@@ -2,8 +2,19 @@
   font-family: "Montserrat", sans-serif !important;
   color: #edf0f1 !important;
 }
+body {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
 .arrayBarsContainer {
-  margin-left: 20px; /*Creates a gap of 20px to the left*/
+  /*Creates a gap of 20px to the left and right*/
+  margin-left: 20px;
   margin-right: 20px;
 }
 #headerBar {

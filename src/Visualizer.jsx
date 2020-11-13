@@ -32,6 +32,7 @@ class Visualizer extends Component {
     //User selects a new value
     //Now update the array size
     number_of_bars_to_display = parseInt(event.target.value);
+    //console.log("number_of_bars_to_display:", number_of_bars_to_display);
     //As the bars increase/decrease we should re-compute the bar width
     /*
     1) Find screen_width
@@ -44,17 +45,18 @@ class Visualizer extends Component {
 
     let available_width_on_the_screen =
       window.innerWidth - 40 - number_of_bars_to_display * 2;
-
+    //console.log("Total width : ", available_width_on_the_screen);
     width_of_bar = available_width_on_the_screen / number_of_bars_to_display; //Floating point width
     //Width would be some floating point number, like 3.45 => Convert it to 3
     //In the process of flooring the width, we loose (0.45 * Total_bars) worth of space
     //So store it in left_over_width
     let left_over_width = width_of_bar - Math.floor(width_of_bar);
     left_over_width *= number_of_bars_to_display;
+    //console.log("left_over_width", left_over_width);
 
     width_of_bar = parseInt(width_of_bar); //Parse the floating width
     let new_bars = parseInt(left_over_width / (width_of_bar + 2)); //Divide with left_over with (parsed_width+2), 2 is for margin-right of array bar
-
+    //console.log("new_bars are:", new_bars);
     number_of_bars_to_display += new_bars; //Add it to the total
 
     this.generateNewValues();
@@ -213,7 +215,7 @@ class Visualizer extends Component {
   render() {
     const fontSizeForNumber = this.getFontSize();
     return (
-      <div>
+      <React.Fragment>
         <NavBar
           slider_max_value={slider_max_value}
           onGenerateNewValues={this.generateNewValues}
@@ -237,7 +239,7 @@ class Visualizer extends Component {
             </div>
           ))}
         </div>
-      </div>
+      </React.Fragment>
     );
   }
   componentDidMount() {
