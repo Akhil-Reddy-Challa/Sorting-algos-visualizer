@@ -1,1 +1,1 @@
-Hosted on https://akhilreddy1998.github.io/SortingVisualizer/#
+Hosted on https://my-sorting-visualizer.netlify.app/
