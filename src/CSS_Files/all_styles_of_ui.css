@@ -1,0 +1,81 @@
+* {
+  font-family: "Montserrat", sans-serif !important;
+  color: #edf0f1 !important;
+}
+body {
+  /* Hide scrollbar for IE, Edge and Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+body::-webkit-scrollbar {
+  display: none;
+}
+.arrayBarsContainer {
+  /*Creates a gap of 20px to the left and right*/
+  margin-left: 20px;
+  margin-right: 20px;
+}
+#headerBar {
+  justify-content: space-around;
+  padding: 30px;
+  pointer-events: auto; /*By setting this to none, all the btns on the navbar would be unclickable */
+}
+#inputSliderText {
+  cursor: default;
+}
+#appName {
+  cursor: pointer;
+}
+#slider {
+  cursor: pointer;
+}
+.numberOnBar {
+  visibility: visible; /*Makes the text on the Bar hidden*/
+  font-weight: bold;
+}
+/*
+Below is for the transistion effect on Algo names
+--STARTS---
+*/
+.nav-link {
+  transition: color 0.3s ease 0s !important;
+}
+.nav-link:hover {
+  color: #0088a9 !important;
+  cursor: pointer;
+}
+/*
+--ENDS---
+*/
+.generateNewValuesButton {
+  padding: 9px 25px;
+  font-size: 16px;
+  background-color: #0082c8;
+  border-radius: 20px !important;
+  border: none;
+  cursor: pointer;
+}
+/*Prevents the red-border when clicking the button*/
+.generateNewValuesButton:focus {
+  outline: none !important;
+}
+.normalBar {
+  display: inline-block;
+  margin-right: 2px;
+  background-color: #00c6ff;
+  text-align: center;
+}
+.redBar {
+  display: inline-block;
+  margin-right: 2px;
+  background-color: #eb3349;
+  text-align: center;
+}
+.greenBar {
+  display: inline-block;
+  margin-right: 2px;
+  background-color: #38ef7d;
+  text-align: center;
+}

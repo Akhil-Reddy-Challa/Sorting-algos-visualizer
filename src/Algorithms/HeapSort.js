@@ -2,7 +2,7 @@ export function HeapSort(array) {
   var leng_of_array = array.length; //Get array length
   var all_the_animations = [];
   // Build heap (rearrange array)
-  for (let i = leng_of_array / 2 - 1; i >= 0; i--)
+  for (let i = Math.floor(leng_of_array / 2) - 1; i >= 0; i--)
     heapify(array, leng_of_array, i, all_the_animations);
 
   // One by one extract an element from heap
